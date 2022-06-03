@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAplikacijaZaUgostiteljskeObjekte.Server", "WebAplikacijaZaUgostiteljskeObjekte\Server\WebAplikacijaZaUgostiteljskeObjekte.Server.csproj", "{6236C5C5-AF8C-4A60-86CF-CB5946D830FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAplikacijaZaUgostiteljskeObjekte.Server", "WebAplikacijaZaUgostiteljskeObjekte\Server\WebAplikacijaZaUgostiteljskeObjekte.Server.csproj", "{6236C5C5-AF8C-4A60-86CF-CB5946D830FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAplikacijaZaUgostiteljskeObjekte.Client", "WebAplikacijaZaUgostiteljskeObjekte\Client\WebAplikacijaZaUgostiteljskeObjekte.Client.csproj", "{D34CEAD5-AF47-4026-A810-172A4813F7A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAplikacijaZaUgostiteljskeObjekte.Client", "WebAplikacijaZaUgostiteljskeObjekte\Client\WebAplikacijaZaUgostiteljskeObjekte.Client.csproj", "{D34CEAD5-AF47-4026-A810-172A4813F7A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAplikacijaZaUgostiteljskeObjekte.Shared", "WebAplikacijaZaUgostiteljskeObjekte\Shared\WebAplikacijaZaUgostiteljskeObjekte.Shared.csproj", "{3AE8B03A-C607-4C83-BA52-B5C3E2D3F293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAplikacijaZaUgostiteljskeObjekte.Shared", "WebAplikacijaZaUgostiteljskeObjekte\Shared\WebAplikacijaZaUgostiteljskeObjekte.Shared.csproj", "{3AE8B03A-C607-4C83-BA52-B5C3E2D3F293}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

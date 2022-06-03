@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 
@@ -10,9 +11,10 @@ using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 {
     [DbContext(typeof(Data))]
-    partial class DataModelSnapshot : ModelSnapshot
+    [Migration("20220529204033_FullDataBase")]
+    partial class FullDataBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +71,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UgostiteljskiObjektiId")
+                    b.Property<int>("UgostiteljskiObjektId")
                         .HasColumnType("int");
 
                     b.HasKey("JelaId");
@@ -127,10 +129,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.Property<float>("UgostiteljskiObjektiProsjecnaOcjena")
                         .HasColumnType("real");
-
-                    b.Property<string>("UgostiteljskiObjektiSlika")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UgostiteljskiObjektiId");
 

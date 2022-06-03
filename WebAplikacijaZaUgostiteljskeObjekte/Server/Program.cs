@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using WebAplikacijaZaUgostiteljskeObjekte.Client.AuthProviders;
+using WebAplikacijaZaUgostiteljskeObjekte.Client.HttpRepository;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Services;
 
@@ -10,8 +14,16 @@ builder.Services.AddDbContext<Data>(options =>
 });
 
 builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IUgostiteljskiObjektiService, UgostiteljskiObjektiService>();
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7058") });
 
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, TestAuthStateProvider>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddApiAuthorization();
+
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -46,6 +58,8 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 app.MapRazorPages();

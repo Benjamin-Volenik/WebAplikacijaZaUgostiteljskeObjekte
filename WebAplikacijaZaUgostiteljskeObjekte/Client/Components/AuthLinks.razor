@@ -1,0 +1,27 @@
+﻿@inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <a class="nav-link" @onclick="Logout" style="cursor:pointer">
+            <span class="oi oi-account-logout" aria-hidden="true"></span> Odjava
+        </a>
+    </Authorized>
+    <NotAuthorized>
+        <NavLink class="nav-link" href="Login">
+            <span class="oi oi-account-login" aria-hidden="true"></span> Prijava     
+        </NavLink>
+        <NavLink class="nav-link" href="Registration">
+            <span aria-hidden="true"></span> Registracija
+        </NavLink>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code
+{
+    private async void Logout()
+    {
+        await localStorage.RemoveItemAsync("email");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+    }
+}

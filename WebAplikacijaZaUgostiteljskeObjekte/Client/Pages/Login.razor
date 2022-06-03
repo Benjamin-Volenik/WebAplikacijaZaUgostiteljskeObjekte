@@ -1,0 +1,78 @@
+﻿@page "/login"
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@using System.ComponentModel.DataAnnotations
+
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+
+<h3 class="d-flex justify-content-center">Prijava</h3>
+
+<div class="container-fluid">
+   <div class="d-flex justify-content-center">
+        <form class="col-xs-8 col-xs-offset-2  col-sm-6 col-sm-offset-3 col-md-4 col-sm-offset-4 col-lg-2 col-lg-offset-5">
+            <EditForm Model="user" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <!-- Email input -->
+                  <div class="form-outline mb-4">
+                    <label for="email">Email</label>
+                    <InputText id="email" @bind-Value="user.Email" class="form-control" for="@(() => user.Email)" />
+                  </div>
+
+                  <!-- Password input -->
+                  <div class="form-outline mb-4">
+                        <label for="password">Lozinka</label>
+                        <InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
+                  </div>
+
+
+                  <!-- Submit button -->
+                  <button type="submit" class="btn btn-primary btn-block mb-4">Prijava</button>
+
+                  <!-- Register buttons -->
+                  <div class="text-center">
+                    <p>Nemate nalog? <a href="registration">Registracija</a></p>
+                  </div>
+            </EditForm>
+        </form>
+   </div>
+</div>
+
+@code {
+    private UserModel user = new UserModel();
+
+    public List<UserModel> Users { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+    }
+
+    private async void HandleLogin()
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        var test = 0;
+        foreach(var korisnik in Users)
+        {
+            if(korisnik.Email == user.Email)
+            {
+                if(korisnik.Password == user.Password)
+                {
+                    Console.WriteLine("Log me in!");
+                    await LocalStorage.SetItemAsync<string>("email",user.Email);
+                    await AuthStateProvider.GetAuthenticationStateAsync();
+                    NavigationManager.NavigateTo("/");
+                    Snackbar.Add("Uspješno ste se prijavili!");
+                }
+            }
+            else
+            {
+                Snackbar.Add("Uneseni podatci nisu točni");
+            }
+        }
+
+    }
+
+}

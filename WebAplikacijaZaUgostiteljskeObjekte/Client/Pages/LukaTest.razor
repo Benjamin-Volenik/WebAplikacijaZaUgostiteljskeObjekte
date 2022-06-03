@@ -9,11 +9,11 @@
         <MudTh>Username</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Username">@context.UserName</MudTd>
+        <MudTd DataLabel="Username">@context.Name</MudTd>
     </RowTemplate>
 </MudTable>
 
-<MudTextField @bind-Value="NoviKorisnik.UserName" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+<MudTextField @bind-Value="NoviKorisnik.Name" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="DodajNovogKorisnika">Primary</MudButton>
 
 

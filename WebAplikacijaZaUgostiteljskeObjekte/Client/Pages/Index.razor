@@ -1,9 +1,46 @@
 ﻿@page "/"
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+
+@inject ISyncLocalStorageService localStorage
+@inject HttpClient Http
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
+    <NotAuthorized>
+        <h1>Dobrodošli!</h1>
+    </NotAuthorized>
+    <Authorized>
+        <h1>Dobrodošli, @PrijavljeniKorisnik</h1>
+    </Authorized>
+</AuthorizeView>
 
-Welcome to your new app.
+<UgostiteljskiObjektiList />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code
+{
+
+    public List<UserModel> Users { get; set; } = new();
+
+    public string PrijavljeniKorisnik;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+
+        string email = localStorage.GetItemAsString("email");
+        string result = email.Trim('"');
+
+
+        foreach(var user in Users)
+        {
+            if(user.Email == result)
+            {
+                PrijavljeniKorisnik = user.Name + " " + user.LastName;
+            }
+        }
+    }
+
+
+
+}

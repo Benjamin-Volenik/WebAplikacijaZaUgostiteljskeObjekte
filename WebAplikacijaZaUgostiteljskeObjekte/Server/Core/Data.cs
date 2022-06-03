@@ -15,5 +15,8 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Core
         }
         public DbSet<User> Korisnici { get; set; }
         public DbSet<Comment> Komentari { get; set; }
+        public DbSet<Jela> Jela { get; set; }
+        public DbSet<Ocjene> Ocjene { get; set; }
+        public DbSet<UgostiteljskiObjekti> UgostiteljskiObjekti { get; set; }
     }
 }

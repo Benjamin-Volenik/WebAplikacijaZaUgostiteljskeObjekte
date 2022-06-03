@@ -11,6 +11,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Core
             CreateMap<User, UserModel>();
             CreateMap<CreateUser, User>().ReverseMap();
             CreateMap<Comment, CommentModel>();
+            CreateMap<UgostiteljskiObjekti, UgostiteljskiObjektiModel>().ReverseMap();
         }
     }
 }

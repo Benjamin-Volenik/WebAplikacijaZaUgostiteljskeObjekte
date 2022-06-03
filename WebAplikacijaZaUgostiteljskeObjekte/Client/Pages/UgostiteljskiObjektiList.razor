@@ -1,0 +1,24 @@
+﻿@inherits UgostiteljskiObjektiListBase
+
+
+<h3>UgostiteljskiObjektiList</h3>
+
+  <MudStack Row="true">
+@foreach(var ugostiteljskiobjekt in UgostiteljskiObjekti)
+{
+   
+    <MudCard Width="20%">
+        <MudCardMedia Image="@ugostiteljskiobjekt.UgostiteljskiObjektiSlika"  />
+            <MudCardContent>
+                <MudText Typo="Typo.h5">@ugostiteljskiobjekt.UgostiteljskiObjektiNaziv</MudText>
+                <MudText Typo="Typo.body2">broj telefona: @ugostiteljskiobjekt.UgostiteljskiObjektiKontakt</MudText>
+                <MudText Typo="Typo.body2">Prosječna ocjena: @ugostiteljskiobjekt.UgostiteljskiObjektiProsjecnaOcjena</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">Prikaži više</MudButton>
+            </MudCardActions>
+    </MudCard>
+
+
+}
+</MudStack>

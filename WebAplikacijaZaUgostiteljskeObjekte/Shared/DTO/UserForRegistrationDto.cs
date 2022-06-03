@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
+namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.DTO
 {
-    public class CreateUser
+    public class UserForRegistrationDto
     {
         [Required(ErrorMessage = "Ovo polje ne smije biti prazno.")]
         public string Name { get; set; }
