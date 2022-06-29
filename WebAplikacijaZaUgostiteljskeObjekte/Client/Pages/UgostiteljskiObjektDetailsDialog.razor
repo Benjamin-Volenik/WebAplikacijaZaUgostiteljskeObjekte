@@ -1,0 +1,44 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+
+
+<EditForm Model="UOBrojtelefona" OnValidSubmit="EditDeveloper">
+    <MudDialog>
+        <DialogContent>
+            <div class="d-flex flex-column py-1">
+                <MudText>Unesite broj telefona</MudText>
+                <MudPaper>@Brojtelefona</MudPaper>
+                <MudTextField Label="Novi broj:" 
+                              @bind-Value="UOBrojtelefona.UgostiteljskiObjektiKontakt" For="@(() => UOBrojtelefona.UgostiteljskiObjektiKontakt)"/>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Uredi</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string Brojtelefona { get; set; }
+
+    [Parameter] public string UOId { get; set; }
+
+    public UgostiteljskiObjektiModel UOBrojtelefona { get; set; } = new();
+
+
+    protected async override Task OnParametersSetAsync()
+    {
+        UOBrojtelefona = await Http.GetFromJsonAsync<UgostiteljskiObjektiModel>($"api/UgostiteljskiObjekti/{UOId}");
+    }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+
+    async Task EditDeveloper()
+    {
+        await Http.PutAsJsonAsync("api/UgostiteljskiObjekti", UOBrojtelefona);
+    }
+
+
+}

@@ -25,5 +25,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
 
             return list;
         }
+
+        public async Task<UgostiteljskiObjektiModel> UrediKontakt(int id, UgostiteljskiObjektiModel urediKontakt)
+        {
+            _context.Update(urediKontakt);
+            await _context.SaveChangesAsync();
+            return urediKontakt;
+        }
     }
 }

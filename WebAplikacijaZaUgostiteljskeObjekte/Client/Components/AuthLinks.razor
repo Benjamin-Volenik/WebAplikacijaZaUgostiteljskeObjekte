@@ -3,15 +3,15 @@
 
 <AuthorizeView>
     <Authorized>
-        <a class="nav-link" @onclick="Logout" style="cursor:pointer">
+        <a class="nav-link" @onclick="Logout" style="cursor:pointer; color:white;">
             <span class="oi oi-account-logout" aria-hidden="true"></span> Odjava
         </a>
     </Authorized>
     <NotAuthorized>
-        <NavLink class="nav-link" href="Login">
+        <NavLink class="nav-link" href="Login" style="color:white;">
             <span class="oi oi-account-login" aria-hidden="true"></span> Prijava     
         </NavLink>
-        <NavLink class="nav-link" href="Registration">
+        <NavLink class="nav-link" href="Registration" style="color:white;">
             <span aria-hidden="true"></span> Registracija
         </NavLink>
     </NotAuthorized>

@@ -29,16 +29,20 @@
         Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
 
         string email = localStorage.GetItemAsString("email");
-        string result = email.Trim('"');
-
-
-        foreach(var user in Users)
+        if(email != null)
         {
-            if(user.Email == result)
+            string result = email.Trim('"');
+
+
+            foreach(var user in Users)
             {
-                PrijavljeniKorisnik = user.Name + " " + user.LastName;
+                if(user.Email == result)
+                {
+                    PrijavljeniKorisnik = user.Name + " " + user.LastName;
+                }
             }
         }
+
     }
 
 

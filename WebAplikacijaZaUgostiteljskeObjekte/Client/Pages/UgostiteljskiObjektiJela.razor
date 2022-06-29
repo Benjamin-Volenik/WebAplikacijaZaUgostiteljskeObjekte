@@ -1,0 +1,49 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+
+
+<EditForm Model="NovoJelo" OnValidSubmit="DodajNovoJelo">
+    <MudDialog>
+        <DialogContent>
+            <div class="d-flex flex-column py-1">
+                <MudText>Unesite naziv jela</MudText>
+                <MudTextField @bind-Value="NovoJelo.NazivJela" For="@(() => NovoJelo.NazivJela)"/>
+                <MudText>Unesite opis jela</MudText>
+                <MudTextField @bind-Value="NovoJelo.Opis" For="@(() => NovoJelo.Opis)"/>
+                <MudText>Unesite cijenu jela</MudText>
+                <MudTextField @bind-Value="NovoJelo.Cjena" For="@(() => NovoJelo.Cjena)"/>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Unesi jelo</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    public List<DishModel> UONovoJelo { get; set; } = new();
+
+    public CreateDish NovoJelo { get; set; } = new();
+
+    [Parameter] public int UOId { get; set; }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+
+    protected async override Task OnParametersSetAsync()
+    {
+        UONovoJelo = await Http.GetFromJsonAsync<List<DishModel>>("api/Jela");
+        NovoJelo.UgostiteljskiObjektiId = UOId;
+        NovoJelo.SlikaUrl = "";
+    }
+
+    async Task DodajNovoJelo()
+    {
+        await Http.PostAsJsonAsync<CreateDish>("api/Jela", NovoJelo);
+    }
+
+
+}

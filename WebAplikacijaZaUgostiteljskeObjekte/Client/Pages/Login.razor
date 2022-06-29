@@ -53,24 +53,17 @@
     private async void HandleLogin()
     {
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        var test = 0;
-        foreach(var korisnik in Users)
+
+        if(user.Password == Users.FirstOrDefault(u => u.Email == user.Email)?.Password)
         {
-            if(korisnik.Email == user.Email)
-            {
-                if(korisnik.Password == user.Password)
-                {
-                    Console.WriteLine("Log me in!");
-                    await LocalStorage.SetItemAsync<string>("email",user.Email);
-                    await AuthStateProvider.GetAuthenticationStateAsync();
-                    NavigationManager.NavigateTo("/");
-                    Snackbar.Add("Uspješno ste se prijavili!");
-                }
-            }
-            else
-            {
+            await LocalStorage.SetItemAsync<string>("email",user.Email);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("/");
+            Snackbar.Add("Uspješno ste se prijavili!");
+        }
+        else
+        {
                 Snackbar.Add("Uneseni podatci nisu točni");
-            }
         }
 
     }

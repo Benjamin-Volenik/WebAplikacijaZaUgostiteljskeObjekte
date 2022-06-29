@@ -1,0 +1,59 @@
+﻿@inherits UgostiteljskiObjektiDetailsBase
+
+@page "/ugostiteljskiobjekti/{id}"
+
+<MudPaper Class="d-flex justify-center flex-grow-1 gap-4 pa-md-6 mx-lg-auto" Elevation="0">
+<MudText Typo="Typo.h3">@ugostiteljskiObjekt.UgostiteljskiObjektiNaziv</MudText>
+</MudPaper>
+
+<MudMainContent>
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+        <MudGrid Class="mud-dark">
+            <MudItem xs="12" sm="7">
+                <MudPaper Class="pa-4">
+                    <b>Jelovnik:</b><br><br>
+                        <MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                            <HeaderContent>
+                                <MudTh>Naziv jela</MudTh>
+                                <MudTh>Opis</MudTh>
+                                <MudTh>Cjena</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Naziv jela">@context.NazivJela</MudTd>
+                                <MudTd DataLabel="Opis">@context.Opis</MudTd>
+                                <MudTd DataLabel="Cjena">@Convert.ToSingle(context.Cjena)</MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    <MudButton OnClick="OpenDialogDish" Variant="Variant.Filled" Color="Color.Primary">
+                        Dodaj jelo
+                    </MudButton>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4 mud-height-full">
+                    <b>Kontakt:</b><br><br>
+                    @ugostiteljskiObjekt.UgostiteljskiObjektiKontakt
+                    <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+                        Uredi
+                    </MudButton>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        <MudText Class="mt-15">Komentari:</MudText>
+        @foreach(var korisnik in Korisnici)
+        {
+            foreach(var komentar in korisnik.Comments)
+            {
+                if(komentar.UgostiteljskiObjektId == ugostiteljskiObjekt.UgostiteljskiObjektiId)
+                {
+                    <MudPaper>@korisnik.Name @korisnik.LastName : <br /> @komentar.CommentText</MudPaper>
+                }
+            }
+        }
+        <MudTextField @bind-Value="Comment.CommentText" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+        <MudButton OnClick="DodajKomentar">Ok</MudButton>
+    </MudContainer>
+</MudMainContent>
+
+
+
