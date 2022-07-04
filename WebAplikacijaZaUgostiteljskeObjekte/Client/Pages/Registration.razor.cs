@@ -32,7 +32,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         public void PokaziAlert()
         {
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-            Snackbar.Add("Uspješno ste se registrirali");
+            Snackbar.Add("Uspješno ste se registrirali!");
         }
 
         public async Task DodajNovogKorisnika()

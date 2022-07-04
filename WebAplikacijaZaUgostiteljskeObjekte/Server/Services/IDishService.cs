@@ -7,5 +7,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
         public void DodajJelo(CreateDish novoJelo);
 
         public List<DishModel> Jela();
+
+        public void UkloniJelo(int id);
     }
 }

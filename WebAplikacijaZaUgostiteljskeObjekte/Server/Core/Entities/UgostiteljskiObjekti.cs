@@ -9,6 +9,7 @@
         public string UgostiteljskiObjektiLozinka { get; set; }
         public float UgostiteljskiObjektiProsjecnaOcjena { get; set; }  
         public string UgostiteljskiObjektiSlika { get; set; }
+        public string UgostiteljskiObjektiStanje { get; set; }
 
     }
 }

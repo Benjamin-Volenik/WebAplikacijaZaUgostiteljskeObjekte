@@ -17,6 +17,7 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IUgostiteljskiObjektiService, UgostiteljskiObjektiService>();
 builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7058") });
 
 builder.Services.AddSwaggerGen();

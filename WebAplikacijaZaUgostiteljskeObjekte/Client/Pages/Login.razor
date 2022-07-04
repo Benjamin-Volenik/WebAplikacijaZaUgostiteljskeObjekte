@@ -8,7 +8,7 @@
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-<h3 class="d-flex justify-content-center">Prijava</h3>
+<h3 class="p-4 d-flex justify-content-center">Prijava</h3>
 
 <div class="container-fluid">
    <div class="d-flex justify-content-center">
@@ -45,9 +45,12 @@
 
     public List<UserModel> Users { get; set; } = new();
 
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+        UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
     }
 
     private async void HandleLogin()
@@ -61,9 +64,16 @@
             NavigationManager.NavigateTo("/");
             Snackbar.Add("Uspješno ste se prijavili!");
         }
+        else if(user.Password == UgostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == user.Email)?.UgostiteljskiObjektiLozinka)
+        {
+            await LocalStorage.SetItemAsync<string>("email",user.Email);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("/");
+            Snackbar.Add("Uspješno ste se prijavili!");
+        }
         else
         {
-                Snackbar.Add("Uneseni podatci nisu točni");
+            Snackbar.Add("Uneseni podatci nisu točni");
         }
 
     }

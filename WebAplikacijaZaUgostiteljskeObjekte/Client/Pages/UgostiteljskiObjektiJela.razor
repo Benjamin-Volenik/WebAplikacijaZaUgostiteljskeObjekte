@@ -1,5 +1,7 @@
 ﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
 @inject HttpClient Http
+@inject ISnackbar snackbar
+@inject NavigationManager navigationManager
 
 
 <EditForm Model="NovoJelo" OnValidSubmit="DodajNovoJelo">
@@ -11,10 +13,11 @@
                 <MudText>Unesite opis jela</MudText>
                 <MudTextField @bind-Value="NovoJelo.Opis" For="@(() => NovoJelo.Opis)"/>
                 <MudText>Unesite cijenu jela</MudText>
-                <MudTextField @bind-Value="NovoJelo.Cjena" For="@(() => NovoJelo.Cjena)"/>
+                <MudNumericField @bind-Value="NovoJelo.Cjena" For="@(() => NovoJelo.Cjena)"/>
             </div>
         </DialogContent>
         <DialogActions>
+            <MudButton OnClick="Close">Odustani</MudButton>
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Unesi jelo</MudButton>
         </DialogActions>
     </MudDialog>
@@ -43,6 +46,9 @@
     async Task DodajNovoJelo()
     {
         await Http.PostAsJsonAsync<CreateDish>("api/Jela", NovoJelo);
+        navigationManager.NavigateTo("/ugostiteljskiobjekti/" + UOId, true);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Uspješno ste dodali jelo.");
     }
 
 

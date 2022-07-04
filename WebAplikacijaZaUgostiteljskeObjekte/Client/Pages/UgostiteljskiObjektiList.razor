@@ -1,26 +1,29 @@
-﻿@inherits UgostiteljskiObjektiListBase
-
+﻿@using System.Text.RegularExpressions
+@inherits UgostiteljskiObjektiListBase
 
 <MudMainContent>
     <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
         <MudStack Row="true">
-            @foreach(var ugostiteljskiobjekt in UgostiteljskiObjekti)
+            <MudGrid>
+            @foreach(var ugostiteljskiobjekt in UgostiteljskiObjekti.Where(uo => uo.UgostiteljskiObjektiId == SelectedUO?.UgostiteljskiObjektiId && uo.UgostiteljskiObjektiStanje == "Odobreno" || SelectedUO == null && uo.UgostiteljskiObjektiStanje == "Odobreno"))
             {
-   
-                <MudCard Width="20%">
-                    <MudCardMedia Image="@ugostiteljskiobjekt.UgostiteljskiObjektiSlika"  />
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">@ugostiteljskiobjekt.UgostiteljskiObjektiNaziv</MudText>
-                            <MudText Typo="Typo.body2">broj telefona: @ugostiteljskiobjekt.UgostiteljskiObjektiKontakt</MudText>
-                            <MudText Typo="Typo.body2">Prosječna ocjena: @ugostiteljskiobjekt.UgostiteljskiObjektiProsjecnaOcjena</MudText>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary"><a href="/ugostiteljskiobjekti/@ugostiteljskiobjekt.UgostiteljskiObjektiId">Prikaži više</a></MudButton>
-                        </MudCardActions>
-                </MudCard>
+                <MudItem xs="3">
+                    <MudCard>
+                        <MudCardMedia Image="@ugostiteljskiobjekt.UgostiteljskiObjektiSlika"  />
+                            <MudCardContent>
+                                <MudText Typo="Typo.h5">@ugostiteljskiobjekt.UgostiteljskiObjektiNaziv</MudText>
+                                <MudText Class="pa-4" Typo="Typo.body1">Broj telefona: @Regex.Replace(ugostiteljskiobjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1-$2-$3")</MudText>
+                                <MudText Class="pa-4" Typo="Typo.body1">Prosječna ocjena: @Convert.ToSingle(ugostiteljskiobjekt.UgostiteljskiObjektiProsjecnaOcjena)   <MudIcon Class="pa-0" Icon="@Icons.Filled.StarBorder" Color="Color.Warning"></MudIcon></MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Class="d-block ml-auto" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/ugostiteljskiobjekti/{ugostiteljskiobjekt.UgostiteljskiObjektiId}")">Prikaži više</MudButton>
+                            </MudCardActions>
+                    </MudCard>
+                </MudItem>
 
 
             }
+            </MudGrid>
         </MudStack>
     </MudContainer>
 </MudMainContent>

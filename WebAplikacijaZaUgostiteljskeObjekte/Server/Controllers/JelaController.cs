@@ -29,5 +29,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
             dishService.DodajJelo(newDish);
         }
 
+        [HttpDelete("{id}")]
+        public void DeleteDish([FromRoute] int id)
+        {
+            dishService.UkloniJelo(id);
+        }
+
     }
 }

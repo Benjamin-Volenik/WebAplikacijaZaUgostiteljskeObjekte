@@ -1,5 +1,7 @@
 ﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
 @inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject ISnackbar snackbar
 
 
 <EditForm Model="UOBrojtelefona" OnValidSubmit="EditDeveloper">
@@ -7,12 +9,12 @@
         <DialogContent>
             <div class="d-flex flex-column py-1">
                 <MudText>Unesite broj telefona</MudText>
-                <MudPaper>@Brojtelefona</MudPaper>
                 <MudTextField Label="Novi broj:" 
-                              @bind-Value="UOBrojtelefona.UgostiteljskiObjektiKontakt" For="@(() => UOBrojtelefona.UgostiteljskiObjektiKontakt)"/>
+                             Mask="@(new PatternMask("000 000 000"))" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiKontakt" For="@(() => UOBrojtelefona.UgostiteljskiObjektiKontakt)"/>
             </div>
         </DialogContent>
         <DialogActions>
+            <MudButton OnClick="Close">Odustani</MudButton>
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Uredi</MudButton>
         </DialogActions>
     </MudDialog>
@@ -38,6 +40,9 @@
     async Task EditDeveloper()
     {
         await Http.PutAsJsonAsync("api/UgostiteljskiObjekti", UOBrojtelefona);
+        navigationManager.NavigateTo("/ugostiteljskiobjekti/" + UOId, true);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Uspješno ste dodali komentar.");
     }
 
 

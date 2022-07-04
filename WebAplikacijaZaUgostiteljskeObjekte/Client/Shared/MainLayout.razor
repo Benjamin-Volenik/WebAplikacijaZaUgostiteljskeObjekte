@@ -1,8 +1,21 @@
 ﻿@using WebAplikacijaZaUgostiteljskeObjekte.Client.Components
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
 @inherits LayoutComponentBase
 
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ISyncLocalStorageService localStorage
+
 <MudThemeProvider/>
-<MudDialogProvider/>
+<MudDialogProvider
+    FullWidth="true"
+    MaxWidth="MaxWidth.ExtraSmall"
+    CloseButton="true"
+    DisableBackdropClick="true"
+    NoHeader="true"
+    Position="DialogPosition.Center"
+    CloseOnEscapeKey="true"
+/>
 <MudSnackbarProvider/>
 
 <MudLayout>
@@ -10,10 +23,36 @@
         <MudText Typo="Typo.h5" Class="ml-3">WAZPUO</MudText>
         <MudButton Href="/" Class="pa-4 ml-5 text-white">Početna</MudButton>
         <MudSpacer />
-        <MudButton Class="text-white" Href="LukaTest">LukaTest</MudButton>
+        <AuthorizeView>
+        @if(ugostiteljskiObjekt != null)
+        {
+            <MudButton Class="text-white" Href="@($"/ugostiteljskiobjekti/{ugostiteljskiObjekt.UgostiteljskiObjektiId}")">Moja stranica</MudButton>          
+        }    
+        </AuthorizeView>
         <AuthLinks />
     </MudAppBar>
     <MudMainContent>
         @Body
     </MudMainContent>
 </MudLayout>
+
+@code
+{
+    public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
+
+    public UgostiteljskiObjektiModel ugostiteljskiObjekt { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ugostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        string email = localStorage.GetItemAsString("email");
+
+        if(email != null)
+        {
+            string result = email.Trim('"');
+            ugostiteljskiObjekt = ugostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == result);
+
+        }
+     }
+}

@@ -18,5 +18,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Core
         public DbSet<Jela> Jela { get; set; }
         public DbSet<Ocjene> Ocjene { get; set; }
         public DbSet<UgostiteljskiObjekti> UgostiteljskiObjekti { get; set; }
+        public DbSet<Admin> Admin { get; set; }
     }
 }

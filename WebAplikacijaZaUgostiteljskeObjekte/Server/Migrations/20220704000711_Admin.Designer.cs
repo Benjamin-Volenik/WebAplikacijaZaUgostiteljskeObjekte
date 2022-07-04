@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 
@@ -10,9 +11,10 @@ using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 {
     [DbContext(typeof(Data))]
-    partial class DataModelSnapshot : ModelSnapshot
+    [Migration("20220704000711_Admin")]
+    partial class Admin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,10 +158,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("UgostiteljskiObjektiSlika")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UgostiteljskiObjektiStanje")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

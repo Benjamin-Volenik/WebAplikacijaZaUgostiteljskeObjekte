@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
+using WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities;
 using WebAplikacijaZaUgostiteljskeObjekte.Shared;
 
 namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
@@ -13,6 +14,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public void DodajUgostiteljskiObjekt(CreateUO noviUO)
+        {
+            _context.UgostiteljskiObjekti.Add(_mapper.Map<UgostiteljskiObjekti>(noviUO));
+            _context.SaveChanges();
         }
 
         public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti()
@@ -31,6 +38,13 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             _context.Update(urediKontakt);
             await _context.SaveChangesAsync();
             return urediKontakt;
+        }
+
+        public async Task<UgostiteljskiObjektiModel> UrediOcjenu(int id, UgostiteljskiObjektiModel urediOcjenu)
+        {
+            _context.Update(urediOcjenu);
+            await _context.SaveChangesAsync();
+            return urediOcjenu;
         }
     }
 }

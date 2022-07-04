@@ -40,5 +40,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpPost]
+        public void AddUO([FromBody] CreateUO newUO)
+        {
+            ugostiteljskiObjektiService.DodajUgostiteljskiObjekt(newUO);
+        }
     }
 }

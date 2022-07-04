@@ -22,6 +22,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             _context.SaveChanges();
         }
 
+        public void UkloniKomentar(int id)
+        {
+            _context.Komentari.Remove(_context.Komentari.Find(id));
+            _context.SaveChanges();
+        }
+
         public List<CommentModel> Komentari()
         {
             List<CommentModel> list = new();

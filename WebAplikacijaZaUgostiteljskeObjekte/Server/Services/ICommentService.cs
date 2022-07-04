@@ -7,5 +7,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
         public void DodajKomentar(AddComment noviKomentar);
 
         public List<CommentModel> Komentari();
+
+        public void UkloniKomentar(int id);
     }
 }

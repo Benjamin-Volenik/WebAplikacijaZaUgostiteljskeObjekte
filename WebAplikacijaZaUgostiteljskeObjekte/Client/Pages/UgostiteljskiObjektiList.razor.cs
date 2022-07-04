@@ -9,11 +9,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
     {
         [Inject] public HttpClient Http { get; set; }
 
-        public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+        [Parameter] public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
 
-        protected override async Task OnInitializedAsync()
-        {
-            UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
-        }
+        [Parameter] public UgostiteljskiObjektiModel? SelectedUO { get; set; }
+
+
+
     }
 }

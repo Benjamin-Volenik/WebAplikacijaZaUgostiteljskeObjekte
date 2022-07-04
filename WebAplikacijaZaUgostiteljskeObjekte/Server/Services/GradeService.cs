@@ -5,37 +5,36 @@ using WebAplikacijaZaUgostiteljskeObjekte.Shared;
 
 namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
 {
-    public class DishService : IDishService
+    public class GradeService : IGradeService
     {
         private readonly Data _context;
         private readonly IMapper _mapper;
 
-        public DishService(Data context, IMapper mapper)
+        public GradeService(Data context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public void DodajJelo(CreateDish novoJelo)
+        public void DodajOcjenu(AddGrade ocjena)
         {
-            _context.Jela.Add(_mapper.Map<Jela>(novoJelo));
+            _context.Ocjene.Add(_mapper.Map<Ocjene>(ocjena));
             _context.SaveChanges();
-            
         }
 
-        public List<DishModel> Jela()
+        public List<OcjeneModel> sveOcjene()
         {
-            List<DishModel> list = new();
-            foreach (var dish in _context.Jela)
+            List<OcjeneModel> list = new();
+            foreach (var ocjena in _context.Ocjene)
             {
-                list.Add(_mapper.Map<DishModel>(dish));
+                list.Add(_mapper.Map<OcjeneModel>(ocjena));
             }
             return list;
         }
 
-        public void UkloniJelo(int id)
+        public void UkloniOcjenu(int id)
         {
-            _context.Jela.Remove(_context.Jela.Find(id));
+            _context.Ocjene.Remove(_context.Ocjene.Find(id));
             _context.SaveChanges();
         }
     }

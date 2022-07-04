@@ -28,5 +28,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
         {
             commentService.DodajKomentar(newComment);
         }
+
+        [HttpDelete("{id}")]
+        public void DeleteComment([FromRoute] int id)
+        {
+            commentService.UkloniKomentar(id);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 
@@ -10,9 +11,10 @@ using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 {
     [DbContext(typeof(Data))]
-    partial class DataModelSnapshot : ModelSnapshot
+    [Migration("20220702000628_OcjeneUpdate")]
+    partial class OcjeneUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,35 +22,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Admin", b =>
-                {
-                    b.Property<int>("AdminId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AdminId");
-
-                    b.ToTable("Admin");
-                });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Comment", b =>
                 {
@@ -156,10 +129,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("UgostiteljskiObjektiSlika")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UgostiteljskiObjektiStanje")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

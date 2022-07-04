@@ -11,40 +11,82 @@
         <h1>Dobrodošli!</h1>
     </NotAuthorized>
     <Authorized>
-        <h1>Dobrodošli, @PrijavljeniKorisnik</h1>
+        <h1>Dobrodošli, @PrijavljeniKorisnik !</h1>
     </Authorized>
 </AuthorizeView>
 
-<UgostiteljskiObjektiList />
+<div class="d-flex justify-content-center">
+<MudAutocomplete ResetValueOnEmptyText="true" T="UgostiteljskiObjektiModel" @bind-Value="SelectedUO" Label="Ugostiteljski objekti" SearchFunc="PretraziObjekte" ToStringFunc="(obj) => obj.UgostiteljskiObjektiNaziv" AdornmentIcon="@Icons.Material.Filled.Search"/>
+</div>
+
+<UgostiteljskiObjektiList UgostiteljskiObjekti="UgostiteljskiObjekti" SelectedUO="SelectedUO" />
 
 @code
 {
 
     public List<UserModel> Users { get; set; } = new();
 
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+
+    public List<UgostiteljskiObjektiModel> UOOdobreni { get; set; } = new();
+
+    public UgostiteljskiObjektiModel PrijavljeniUO { get; set; } = new();
+
     public string PrijavljeniKorisnik;
+
+    public UgostiteljskiObjektiModel? SelectedUO { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+
         Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+        UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        UOOdobreni = UgostiteljskiObjekti.FindAll(x => x.UgostiteljskiObjektiStanje == "Odobreno");
 
         string email = localStorage.GetItemAsString("email");
-        if(email != null)
+        string result;
+        if (email != null)
         {
-            string result = email.Trim('"');
+            result = email.Trim('"');
 
-
-            foreach(var user in Users)
+            foreach (var user in Users)
             {
-                if(user.Email == result)
+                if (user.Email == result)
                 {
                     PrijavljeniKorisnik = user.Name + " " + user.LastName;
                 }
             }
         }
 
+        if(PrijavljeniKorisnik == null)
+        {
+            if (email != null)
+            {
+                result = email.Trim('"');
+
+                foreach (var uo in UgostiteljskiObjekti)
+                {
+                    if (uo.UgostiteljskiObjektiEmali == result)
+                    {
+                        PrijavljeniKorisnik = uo.UgostiteljskiObjektiNaziv;
+                    }
+                }
+            }
+        }
+
+    }
+
+    public async Task<IEnumerable<UgostiteljskiObjektiModel>> PretraziObjekte(string value)
+    {
+        if(String.IsNullOrEmpty(value))
+        {
+            return UgostiteljskiObjekti;
+        }
+
+        return UgostiteljskiObjekti.Where(x => x.UgostiteljskiObjektiNaziv.Contains(value, StringComparison.OrdinalIgnoreCase));
     }
 
 
-
 }
+
+

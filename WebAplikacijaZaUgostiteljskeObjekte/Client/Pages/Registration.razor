@@ -2,19 +2,19 @@
 
 @using System.ComponentModel.DataAnnotations
 
-<h3 class="d-flex justify-content-center">Registracija</h3>
+<h3 class="p-4 d-flex justify-content-center">Registracija</h3>
 
 <EditForm Model="NoviKorisnik" OnValidSubmit="DodajNovogKorisnika">
 <DataAnnotationsValidator/>
 <MudGrid>
-    <MudItem xs="15" sm="12">
-        <MudCard>
+    <MudItem xs="15" sm="12" Class="pa-4 d-flex justify-content-center">
+        <MudCard Class="w-50">
             <MudCardContent>
                 <MudTextField Label="Ime:" 
                               @bind-Value="NoviKorisnik.Name" For="@(() => NoviKorisnik.Name)"/>
                 <MudTextField Label="Prezime:" Class="mt-3"
                               @bind-Value="NoviKorisnik.LastName" For="@(() => NoviKorisnik.LastName)"/>
-                <MudTextField Label="Email" Class="mt-3"
+                <MudTextField Label="Email:" Class="mt-3"
                               @bind-Value="NoviKorisnik.Email" For="@(() => NoviKorisnik.Email)" />
                 <MudTextField Label="Lozinka:" Class="mt-3"
                               @bind-Value="NoviKorisnik.Password" For="@(() => NoviKorisnik.Password)" InputType="InputType.Password"/>
@@ -22,11 +22,13 @@
                               @bind-Value="NoviKorisnik.ConfirmPassword" For="@(() => NoviKorisnik.ConfirmPassword)" InputType="InputType.Password"/>
             </MudCardContent>
             <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Href="/registration/UO">Registracija ugostiteljskog objekta</MudButton>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Registriraj se</MudButton>
             </MudCardActions>
         </MudCard>
     </MudItem>
 </MudGrid>
 </EditForm>
+
 
 
