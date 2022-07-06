@@ -68,11 +68,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
             string email = localStorage.GetItemAsString("email");
 
-            if(email != null)
+            if (email != null)
             {
                 string result = email.Trim('"');
                 Korisnik = Korisnici.FirstOrDefault(k => k.Email == result);
-                if(Korisnik == null)
+                if (Korisnik == null)
                 {
                     ugostiteljskiObjektEmail = UgostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == result);
                 }
@@ -80,7 +80,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
             Ocjene = await Http.GetFromJsonAsync<List<OcjeneModel>>("api/Ocjene");
 
-            if(Korisnik != null)
+            if (Korisnik != null)
             {
                 OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
                 UOProvjera = 0;
@@ -92,14 +92,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
                 UOProvjera = 1;
             }
 
-            sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
+            sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
 
             foreach (var ocjene in sveOcjene)
             {
                 fSOcjene = fSOcjene + ocjene.Ocjena;
             }
 
-            if(fSOcjene == 0)
+            if (fSOcjene == 0)
             {
                 ProsjecnaOcjena = 0;
             }
@@ -133,7 +133,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public async Task DodajKomentar()
         {
-            if(Comment.CommentText != null)
+            if (Comment.CommentText != null)
             {
                 Comment.UgostiteljskiObjektId = ugostiteljskiObjekt.UgostiteljskiObjektiId;
                 Comment.UserId = Korisnik.UserId;

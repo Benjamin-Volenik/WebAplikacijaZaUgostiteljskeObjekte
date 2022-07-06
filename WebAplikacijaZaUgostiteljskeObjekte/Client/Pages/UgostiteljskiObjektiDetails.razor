@@ -33,6 +33,7 @@
                                 <MudTd DataLabel="Cjena">@Convert.ToSingle(context.Cjena) kn</MudTd>
                                 @if (ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
                                 {
+                                    <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
                                     <MudTd DataLabel="Obriši"><MudButton @onclick="() => ObrisiJelo(context)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="fas fa-trash" /></MudButton></MudTd>
                                 }
                             </RowTemplate>
@@ -53,7 +54,7 @@
             <MudItem xs="12" sm="5">
                 <MudPaper Class="pa-4 mud-height-full">
                     <MudText Typo="Typo.h6"><b>Kontakt:</b></MudText><br><br>
-                    <MudText Class="d-flex" Typo="Typo.h6"><b>@Regex.Replace(ugostiteljskiObjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1-$2-$3")</b>
+                    <MudText Class="d-flex" Typo="Typo.h6"><b>@Regex.Replace(ugostiteljskiObjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1 $2 $3")</b>
                         <AuthorizeView>
                             @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
                             {
@@ -94,8 +95,11 @@
                             }
                         }
                         <AuthorizeView>
-                            <MudTextField @bind-Value="Comment.CommentText" Label="Unesite komentar..." Variant="Variant.Outlined"></MudTextField>
-                            <MudButton Class="d-block ml-auto mt-5" Variant="Variant.Filled" Color="Color.Primary" OnClick="DodajKomentar">Dodaj komentar</MudButton>
+                            @if(Korisnik != null)
+                            {
+                                <MudTextField @bind-Value="Comment.CommentText" Label="Unesite komentar..." Variant="Variant.Outlined"></MudTextField>
+                                <MudButton Class="d-block ml-auto mt-5" Variant="Variant.Filled" Color="Color.Primary" OnClick="DodajKomentar">Dodaj komentar</MudButton>
+                            }
                         </AuthorizeView>
                 </MudPaper>
             </MudItem>
@@ -148,7 +152,7 @@
                             </NotAuthorized>
                         </AuthorizeView>
                         </MudForm>
-                        <MudText Typo="Typo.h6" Class="pa-4 mt-5 d-flex justify-content-center">Prosječna ocjena:@Convert.ToSingle(ProsjecnaOcjena)</MudText>
+                        <MudText Typo="Typo.h6" Class="pa-4 mt-5 d-flex justify-content-center">Prosječna ocjena:@Math.Round(ugostiteljskiObjekt.UgostiteljskiObjektiProsjecnaOcjena,2)</MudText>
                 </MudPaper>
             </MudItem>
         </MudGrid>

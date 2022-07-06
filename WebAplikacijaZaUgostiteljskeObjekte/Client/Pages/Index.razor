@@ -80,10 +80,10 @@
     {
         if(String.IsNullOrEmpty(value))
         {
-            return UgostiteljskiObjekti;
+            return UgostiteljskiObjekti.Where(x => x.UgostiteljskiObjektiStanje == "Odobreno");
         }
 
-        return UgostiteljskiObjekti.Where(x => x.UgostiteljskiObjektiNaziv.Contains(value, StringComparison.OrdinalIgnoreCase));
+        return UgostiteljskiObjekti.Where(x => x.UgostiteljskiObjektiNaziv.Contains(value, StringComparison.OrdinalIgnoreCase) && x.UgostiteljskiObjektiStanje == "Odobreno");
     }
 
 

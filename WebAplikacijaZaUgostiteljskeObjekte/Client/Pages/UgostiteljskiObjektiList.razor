@@ -12,8 +12,8 @@
                         <MudCardMedia Image="@ugostiteljskiobjekt.UgostiteljskiObjektiSlika"  />
                             <MudCardContent>
                                 <MudText Typo="Typo.h5">@ugostiteljskiobjekt.UgostiteljskiObjektiNaziv</MudText>
-                                <MudText Class="pa-4" Typo="Typo.body1">Broj telefona: @Regex.Replace(ugostiteljskiobjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1-$2-$3")</MudText>
-                                <MudText Class="pa-4" Typo="Typo.body1">Prosječna ocjena: @Convert.ToSingle(ugostiteljskiobjekt.UgostiteljskiObjektiProsjecnaOcjena)   <MudIcon Class="pa-0" Icon="@Icons.Filled.StarBorder" Color="Color.Warning"></MudIcon></MudText>
+                                <MudText Class="pa-4" Typo="Typo.body1">Broj telefona: @Regex.Replace(ugostiteljskiobjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1 $2 $3")</MudText>
+                                <MudText Class="pa-4" Typo="Typo.body1">Prosječna ocjena: @Math.Round(ugostiteljskiobjekt.UgostiteljskiObjektiProsjecnaOcjena,2)   <MudIcon Class="pa-0" Icon="@Icons.Filled.StarBorder" Color="Color.Warning"></MudIcon></MudText>
                             </MudCardContent>
                             <MudCardActions>
                                 <MudButton Class="d-block ml-auto" Variant="Variant.Filled" Color="Color.Primary" Href="@($"/ugostiteljskiobjekti/{ugostiteljskiobjekt.UgostiteljskiObjektiId}")">Prikaži više</MudButton>
