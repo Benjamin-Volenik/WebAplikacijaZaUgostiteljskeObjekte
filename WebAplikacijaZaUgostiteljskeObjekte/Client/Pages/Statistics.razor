@@ -1,0 +1,61 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@page "/Stat"
+
+<h3>Statistics</h3>
+
+<MudPaper Class="pa-4">
+    <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels"  @bind-SelectedIndex="@Index" Width="300px" Height="300px" />
+</MudPaper>
+
+@if(Index == 0)
+{
+    <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj administratora: @Admini.Count()</MudText>
+}
+else if(Index == 1)
+{
+    <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj korisnika: @Korisnici.Count()</MudText>
+}
+else if(Index == 2)
+{
+    <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj ugostiteljskih objekata: @UgostiteljskiObjektiOdobreni.Count()</MudText>
+}
+
+@code {
+    public int Index = -1;
+
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjektiOdobreni { get; set; } = new();
+    public List<UserModel> Korisnici { get; set; } = new();
+    public List<AdminModel> Admini { get; set; } = new();
+    double[] data = { };
+    string[] labels = { "Administratori","Korisnici","Ugostiteljski objekti"};
+
+    protected override async Task OnInitializedAsync()
+    {
+        UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+        Admini = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
+        UgostiteljskiObjektiOdobreni = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiStanje == "Odobreno");
+
+        var new_data = new double[3];
+        for (int i = 0; i < new_data.Length; i++)
+        {
+            if(i == 0)
+            {
+                new_data[i] = Admini.Count();
+            }
+            else if(i == 1)
+            {
+                new_data[i] = Korisnici.Count();
+            }
+            else if (i == 2)
+            {
+                new_data[i] = UgostiteljskiObjektiOdobreni.Count();
+            }
+        }
+        data = new_data;
+    }
+
+
+}

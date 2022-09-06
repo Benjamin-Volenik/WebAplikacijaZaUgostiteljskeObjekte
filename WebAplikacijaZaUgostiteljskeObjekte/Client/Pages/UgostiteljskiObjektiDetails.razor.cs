@@ -25,8 +25,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public List<DishModel> Dishes { get; set; } = new();
 
+        public List<DrinksModel> Drinks { get; set; } = new();
+
         //tablica podatci
         public List<DishModel> values = new();
+
+        public List<DrinksModel> drinksValues = new();
 
         public List<CommentModel> Komentari { get; set; } = new();
 
@@ -60,7 +64,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
             Dishes = await Http.GetFromJsonAsync<List<DishModel>>("api/Jela");
 
+            Drinks = await Http.GetFromJsonAsync<List<DrinksModel>>("api/Drinks");
+
             values = Dishes.FindAll(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
+
+            drinksValues = Drinks.FindAll(d => d.UgostiteljskiObjektiId == Int32.Parse(Id));
 
             Komentari = await Http.GetFromJsonAsync<List<CommentModel>>("api/Comment");
 
@@ -180,6 +188,13 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             await Http.DeleteAsync($"api/Ocjene/{ocjena.OcjeneId}");
             navigationManager.NavigateTo("/ugostiteljskiobjekti/" + Id, true);
 
+        }
+
+        public async Task ObrisiPice(DrinksModel pice)
+        {
+            await Http.DeleteAsync($"api/Drinks/{pice.DrinksId}");
+            Drinks.Remove(pice);
+            drinksValues = Drinks.FindAll(d => d.UgostiteljskiObjektiId == Int32.Parse(Id));
         }
 
 

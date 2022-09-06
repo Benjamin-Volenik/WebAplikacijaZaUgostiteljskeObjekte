@@ -40,7 +40,6 @@
     {
         UONovoJelo = await Http.GetFromJsonAsync<List<DishModel>>("api/Jela");
         NovoJelo.UgostiteljskiObjektiId = UOId;
-        NovoJelo.SlikaUrl = "";
     }
 
     async Task DodajNovoJelo()

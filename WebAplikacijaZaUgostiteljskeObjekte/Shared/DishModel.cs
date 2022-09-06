@@ -17,6 +17,5 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         [Column(TypeName = "money")]
         public decimal Cjena { get; set; }
 
-        public string SlikaUrl { get; set; }
     }
 }

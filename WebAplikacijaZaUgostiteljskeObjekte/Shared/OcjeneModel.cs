@@ -12,5 +12,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         public int UserId { get; set; }
         public int UgostiteljskiObjektiId { get; set; }
         public int Ocjena { get; set; }
+        public DateTime OcjenaVrijeme { get; set; }
     }
 }

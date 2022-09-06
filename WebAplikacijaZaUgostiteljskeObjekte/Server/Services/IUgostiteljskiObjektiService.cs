@@ -10,6 +10,8 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
 
        Task<UgostiteljskiObjektiModel> UrediOcjenu(int id, UgostiteljskiObjektiModel urediOcjenu);
 
+       Task<UgostiteljskiObjektiModel> UrediStanje(int id, UgostiteljskiObjektiModel urediStanje);
+
         public void DodajUgostiteljskiObjekt(CreateUO noviUO);
     }
 }

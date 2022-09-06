@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using WebAplikacijaZaUgostiteljskeObjekte.Shared
 
+
 @inject ISyncLocalStorageService localStorage
 @inject HttpClient Http
 
@@ -19,7 +20,42 @@
 <MudAutocomplete ResetValueOnEmptyText="true" T="UgostiteljskiObjektiModel" @bind-Value="SelectedUO" Label="Ugostiteljski objekti" SearchFunc="PretraziObjekte" ToStringFunc="(obj) => obj.UgostiteljskiObjektiNaziv" AdornmentIcon="@Icons.Material.Filled.Search"/>
 </div>
 
-<UgostiteljskiObjektiList UgostiteljskiObjekti="UgostiteljskiObjekti" SelectedUO="SelectedUO" />
+<div class="d-flex">
+<MudPaper Style="@($"color:{Colors.Shades.Black}; background:{Colors.Grey.Lighten4};")" Width="250px" Class="py-3" Elevation="0">
+    <MudNavMenu>
+        <MudText Typo="Typo.h6" Class="px-4 ml-15 mr-15">Pretraga</MudText>
+        <MudDivider Class="my-2"/>
+        <MudTextField @bind-Value="OdabraniGrad" Label="Naziv grada" Variant="Variant.Outlined" Immediate="true" Placeholder="Unesite naziv grada"></MudTextField>
+        <MudSelect @bind-Value="OdabranaOcjena" T="int" Label="Ocjena" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
+            <MudSelectItem T="int" Value="0"/>
+            <MudSelectItem T="int" Value="1"/>
+            <MudSelectItem T="int" Value="2"/>
+            <MudSelectItem T="int" Value="3"/>
+            <MudSelectItem T="int" Value="4"/>
+            <MudSelectItem T="int" Value="5"/>
+        </MudSelect>
+        <MudSelect @bind-value="OdabraniTipUO" T="string" Label="Tip ugostiteljskog objekta" Placeholder="Odaberite tip" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
+            <MudSelectItem T="string" Value="@("/")">Svi tipovi</MudSelectItem>
+            <MudSelectItem T="string" Value="@("Restoran")"/>
+            <MudSelectItem T="string" Value="@("Pizzeria")"/>
+            <MudSelectItem T="string" Value="@("Slastičarnica")"/>
+            <MudSelectItem T="string" Value="@("Fast food")"/>
+            <MudSelectItem T="string" Value="@("Kavana")"/>
+            <MudSelectItem T="string" Value="@("Pivnica")"/>
+            <MudSelectItem T="string" Value="@("Caffe bar")"/>
+            <MudSelectItem T="string" Value="@("Bistro")"/>
+        </MudSelect>
+        <MudSelect @bind-value="OdabraniRadijus" T="int" Label="Radijus" Placeholder="Odaberite radijus" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
+            <MudSelectItem T="int" Value="5" />
+            <MudSelectItem T="int" Value="10" />
+            <MudSelectItem T="int" Value="15" />
+            <MudSelectItem T="int" Value="20" />
+        </MudSelect>
+    </MudNavMenu>
+</MudPaper>
+
+<UgostiteljskiObjektiList UgostiteljskiObjekti="UgostiteljskiObjekti" SelectedUO="SelectedUO" OdabranaOcjena="OdabranaOcjena" OdabraniTipUO="@OdabraniTipUO" OdabraniGrad="@OdabraniGrad" OdabraniRadijus="@OdabraniRadijus"/>
+</div>
 
 @code
 {
@@ -27,6 +63,8 @@
     public List<UserModel> Users { get; set; } = new();
 
     public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+
+    public List<AdminModel> Admini { get; set; } = new();
 
     public List<UgostiteljskiObjektiModel> UOOdobreni { get; set; } = new();
 
@@ -36,11 +74,20 @@
 
     public UgostiteljskiObjektiModel? SelectedUO { get; set; }
 
+    public int OdabranaOcjena;
+
+    public string OdabraniTipUO = "/";
+
+    public string OdabraniGrad { get; set; }
+
+    public int OdabraniRadijus { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
 
         Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
         UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        Admini = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
         UOOdobreni = UgostiteljskiObjekti.FindAll(x => x.UgostiteljskiObjektiStanje == "Odobreno");
 
         string email = localStorage.GetItemAsString("email");
@@ -74,10 +121,28 @@
             }
         }
 
+        if(PrijavljeniKorisnik == null)
+        {
+            if (email != null)
+            {
+                result = email.Trim('"');
+
+                foreach (var admin in Admini)
+                {
+                    if (admin.Email == result)
+                    {
+                        PrijavljeniKorisnik = admin.Name + " " + admin.LastName;
+                    }
+                }
+            }
+        }
+
     }
 
     public async Task<IEnumerable<UgostiteljskiObjektiModel>> PretraziObjekte(string value)
     {
+        //value naziv ugostiteljskog objekta
+
         if(String.IsNullOrEmpty(value))
         {
             return UgostiteljskiObjekti.Where(x => x.UgostiteljskiObjektiStanje == "Odobreno");
@@ -85,6 +150,7 @@
 
         return UgostiteljskiObjekti.Where(x => x.UgostiteljskiObjektiNaziv.Contains(value, StringComparison.OrdinalIgnoreCase) && x.UgostiteljskiObjektiStanje == "Odobreno");
     }
+
 
 
 }

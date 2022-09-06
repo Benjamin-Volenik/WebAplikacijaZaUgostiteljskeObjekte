@@ -46,5 +46,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             await _context.SaveChangesAsync();
             return urediOcjenu;
         }
+
+        public async Task<UgostiteljskiObjektiModel> UrediStanje(int id, UgostiteljskiObjektiModel urediStanje)
+        {
+            _context.Update(urediStanje);
+            await _context.SaveChangesAsync();
+            return urediStanje;
+        }
     }
 }

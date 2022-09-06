@@ -1,0 +1,45 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject ISyncLocalStorageService localStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient Http
+
+<AuthorizeView>
+    <Authorized>
+        @for(int i = 0;i < ugostiteljskiObjekti.Count(); i++)
+        {
+            if(localStorage.GetItemAsString("email").Trim('"') == ugostiteljskiObjekti[i].UgostiteljskiObjektiEmali)
+            {
+                <MudButton Class="text-white" Href="@($"/ugostiteljskiobjekti/{ugostiteljskiObjekti[i].UgostiteljskiObjektiId}")">Moja stranica</MudButton>              
+            }
+            
+        }
+        @for(int i = 0;i < admin.Count(); i++)
+        {
+            if(localStorage.GetItemAsString("email").Trim('"') == admin[i].Email)
+            {
+                <MudButton Href="/registrationadmin" Class="pa-4 ml-5 text-white">Registracije</MudButton>             
+            }
+            
+        }        
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
+
+    public List<AdminModel> admin { get; set; } = new();
+
+    public UgostiteljskiObjektiModel ugostiteljskiObjekt { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ugostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        admin = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
+        string email = localStorage.GetItemAsString("email");
+
+        StateHasChanged();
+    }
+
+}

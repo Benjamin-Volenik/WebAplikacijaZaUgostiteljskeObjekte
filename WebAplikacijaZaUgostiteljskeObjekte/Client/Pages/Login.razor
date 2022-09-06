@@ -17,23 +17,21 @@
                 <DataAnnotationsValidator />
                 <!-- Email input -->
                   <div class="form-outline mb-4">
-                    <label for="email">Email</label>
-                    <InputText id="email" @bind-Value="user.Email" class="form-control" for="@(() => user.Email)" />
+                    <MudTextField id="email" @bind-Value="user.Email" Label="Email" Variant="Variant.Outlined" For="@(() => user.Email)"></MudTextField>
                   </div>
 
                   <!-- Password input -->
                   <div class="form-outline mb-4">
-                        <label for="password">Lozinka</label>
-                        <InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
+                        <MudTextField id="password" @bind-Value="user.Password" InputType="InputType.Password" Label="Lozinka" Variant="Variant.Outlined" For="@(() => user.Password)" />
                   </div>
 
 
                   <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary btn-block mb-4">Prijava</button>
+                  <MudButton  ButtonType="ButtonType.Submit" Class="d-block ml-auto mr-auto" Variant="Variant.Filled" Color="Color.Primary">Prijava</MudButton>
 
                   <!-- Register buttons -->
-                  <div class="text-center">
-                    <p>Nemate nalog? <a href="registration">Registracija</a></p>
+                  <div class="text-center mt-4">
+                    <p>Nemate korisnički račun? <MudLink Href="registration">Registracija</MudLink></p>
                   </div>
             </EditForm>
         </form>
@@ -47,10 +45,13 @@
 
     public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
 
+    public List<AdminModel> Admin { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
         UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        Admin = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
     }
 
     private async void HandleLogin()
@@ -62,18 +63,26 @@
             await LocalStorage.SetItemAsync<string>("email",user.Email);
             await AuthStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo("/");
-            Snackbar.Add("Uspješno ste se prijavili!");
+            Snackbar.Add("Uspješno ste se prijavili!",Severity.Success);
         }
         else if(user.Password == UgostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == user.Email)?.UgostiteljskiObjektiLozinka)
         {
             await LocalStorage.SetItemAsync<string>("email",user.Email);
             await AuthStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo("/");
-            Snackbar.Add("Uspješno ste se prijavili!");
+            Snackbar.Add("Uspješno ste se prijavili!",Severity.Success);
+        }
+        else if(user.Password == Admin.FirstOrDefault(a => a.Email == user.Email)?.Password)
+        {
+            await LocalStorage.SetItemAsync<string>("email",user.Email);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("/");
+            Snackbar.Add("Uspješno ste se prijavili!",Severity.Success);
         }
         else
         {
             Snackbar.Add("Uneseni podatci nisu točni");
+            user = new UserModel();
         }
 
     }

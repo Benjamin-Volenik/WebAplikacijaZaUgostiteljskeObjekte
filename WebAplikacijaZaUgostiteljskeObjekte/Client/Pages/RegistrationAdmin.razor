@@ -1,0 +1,51 @@
+﻿@page "/registrationadmin"
+
+@using System.Net.Http.Json
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@inject ISnackbar snackbar
+
+<h3>RegistrationAdmin</h3>
+
+<MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Naziv ugostiteljskog objekta</MudTh>
+        <MudTh>Kontakt</MudTh>
+        <MudTh>Email ugostiteljskog objekta</MudTh>
+        <MudTh>Status registracije</MudTh>
+        <MudTh>Odobri registraciju</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Naziv ugostiteljskog objekta">@context.UgostiteljskiObjektiNaziv</MudTd>
+        <MudTd DataLabel="Kontakt">@context.UgostiteljskiObjektiKontakt</MudTd>
+        <MudTd DataLabel="Email ugostiteljskog objekta">@context.UgostiteljskiObjektiEmali</MudTd>
+        <MudTd DataLabel="Status registracije">@context.UgostiteljskiObjektiStanje</MudTd>
+        <MudTd DataLabel="Odobri registraciju"><MudButton @onclick="() => UpdateStanje(context.UgostiteljskiObjektiId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+@code {
+
+    public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
+    public List<UgostiteljskiObjektiModel> values = new();
+    public UgostiteljskiObjektiModel uredjeniUO { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ugostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+
+        values = ugostiteljskiObjekti.FindAll(u => u.UgostiteljskiObjektiStanje == "Neodobreno");
+    }
+
+    public async Task UpdateStanje(int id)
+    {
+        uredjeniUO = ugostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiId == id);
+        uredjeniUO.UgostiteljskiObjektiStanje = "Odobreno";
+        await Http.PutAsJsonAsync("api/UgostiteljskiObjekti", uredjeniUO);
+        values = ugostiteljskiObjekti.FindAll(u => u.UgostiteljskiObjektiStanje == "Neodobreno");
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Registracija ugostiteljskog objekta " + uredjeniUO.UgostiteljskiObjektiNaziv + " je odobrena!");
+    }
+
+}

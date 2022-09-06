@@ -29,7 +29,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         {
             NoviUO.UgostiteljskiObjektiProsjecnaOcjena = 0;
             NoviUO.UgostiteljskiObjektiSlika = "https://via.placeholder.com/350x300";
-            NoviUO.UgostiteljskiObjektiStanje = "Odobreno";
+            NoviUO.UgostiteljskiObjektiStanje = "Neodobreno";
             await Http.PostAsJsonAsync<CreateUO>("api/UgostiteljskiObjekti", NoviUO);
             PokaziAlert();
             NavigationManager.NavigateTo("/");

@@ -11,5 +11,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         public string CommentText { get; set; }
         public int UserId { get; set; }
         public int UgostiteljskiObjektId { get; set; }
+        public DateTime CommentTime { get; set; }
     }
 }

@@ -1,0 +1,46 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+
+@inject HttpClient Http
+@inject ISnackbar snackbar
+
+<EditForm Model="Bug" OnValidSubmit="DodajBug">
+    <MudDialog>
+        <DialogContent>
+            <div class="d-flex flex-column py-1">
+                <MudText>Unesite grešku/bug koju ste primjetili</MudText>
+                <MudTextField T="string" Variant="Variant.Filled" Lines="3" @bind-Value="Bug.BugText" For="@(() => Bug.BugText)"/>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Close">Odustani</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Prijavi</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string UEmail { get; set; }
+
+    public BugModel Bug { get; set; } = new();
+
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+    protected async override Task OnParametersSetAsync()
+    {
+        Bug.UserEmail = UEmail;
+        Bug.BugStaus = 0;
+        Bug.BugVrijeme = DateTime.Now;
+    }
+
+    async Task DodajBug()
+    {
+        await Http.PostAsJsonAsync<BugModel>("api/Bug", Bug);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Vaša prijava je zaprimljena!");
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+}

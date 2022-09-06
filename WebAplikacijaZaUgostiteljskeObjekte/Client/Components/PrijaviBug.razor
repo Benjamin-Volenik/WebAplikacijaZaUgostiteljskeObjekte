@@ -1,0 +1,41 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject ISyncLocalStorageService localStorage
+
+
+<AuthorizeView>
+    <Authorized>
+        @foreach(var admin in Admini)
+        {
+            if(localStorage.GetItemAsString("email").Trim('"') != admin.Email)
+            {
+              <MudButton OnClick="OpenDialogBug" Class="pa-4 ml-5 text-white">Prijavi problem</MudButton>
+            }
+        }
+
+    </Authorized>
+</AuthorizeView>
+
+    @code {
+
+    [Inject] IDialogService DialogService { get; set; }
+    [Inject] public HttpClient Http { get; set; }
+
+    [Parameter] public string UEmail { get; set; }
+
+    public List<AdminModel> Admini { get; set; } = new();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        Admini = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
+    }
+
+    public void OpenDialogBug()
+    {
+        DialogService.Show<ReportBugDialog>("Prijavi grešku (bug)", new DialogParameters
+        {
+            // Email korisnika ili ugostiteljskog objekta koji je prijavio bug
+            ["UEmail"] = localStorage.GetItemAsString("email").Trim('"')
+        });
+    }
+}

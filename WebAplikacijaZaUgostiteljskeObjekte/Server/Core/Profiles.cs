@@ -18,6 +18,9 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Core
             CreateMap<CreateDish, Jela>().ReverseMap();
             CreateMap<AddGrade, Ocjene>().ReverseMap();
             CreateMap<Ocjene, OcjeneModel>().ReverseMap();
+            CreateMap<Admin, AdminModel>().ReverseMap();
+            CreateMap<PrijavljeniBugovi, BugModel>().ReverseMap();
+            CreateMap<Drinks, DrinksModel>().ReverseMap();
         }
     }
 }

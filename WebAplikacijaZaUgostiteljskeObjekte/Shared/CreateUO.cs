@@ -22,5 +22,25 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         public float UgostiteljskiObjektiProsjecnaOcjena { get; set; }
         public string UgostiteljskiObjektiSlika { get; set; }
         public string UgostiteljskiObjektiStanje { get; set; }
+        [Required(ErrorMessage = "Morate odabrati tip.")]
+        public string UgostiteljskiObjektiTip { get; set; }
+        [Required(ErrorMessage = "Morate unesti naziv grada.")]
+        public string UgostiteljskiObjektiGrad { get; set; }
+        [Required(ErrorMessage = "Niste unesti naziv ulice.")]
+        public string UgostiteljskiObjektiUlica { get; set; }
+        [Required(ErrorMessage = "Niste unesti kućni broj.")]
+        public int UgostiteljskiObjektiKucniBroj { get; set; }
+        [Required(ErrorMessage = "Morate unesti latitudu.")]
+        public decimal UgostiteljskiObjektiLatituda { get; set; }
+        [Required(ErrorMessage = "Morate unesti longitutdu.")]
+        public decimal UgostiteljskiObjektiLongituda { get; set; }
+        [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
+        public string UgostiteljskiObjektiRadnoVrijeme { get; set; }
+        [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
+        public string UgostiteljskiObjektiRadnoVrijemePraznici { get; set; }
+        [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
+        public string UgostiteljskiObjektiRadnoVrijemeSub { get; set; }
+        [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
+        public string UgostiteljskiObjektiRadnoVrijemeNed { get; set; }
     }
 }

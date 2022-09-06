@@ -11,6 +11,35 @@
     <link href="WebAplikacijaZaUgostiteljskeObjekte.Client.styles.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD00p8zrfhHARywMZbEpoPn-RsahR6dZxI"></script>
+    <script>
+        function initMap() {
+            var latlng = new google.maps.LatLng(45.815399, 15.966568);
+            var options = {
+                zoom: 8, center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map"), options);
+        }
+    </script>
+    <script>
+        function geocodeAddress(obj,obj2) {
+            var latlng = new google.maps.LatLng(45.815399, 15.966568);
+            var options = {
+                zoom: 8, center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var resultsMap = new google.maps.Map(document.getElementById("map"), options);
+
+            var uolatlong = new google.maps.LatLng(obj,obj2);
+            var marker = new google.maps.Marker({
+                map: resultsMap,
+                position: uolatlong
+            });
+            console.log(uolatlong);
+            marker.setMap(resultsMap);
+        }
+    </script>
 </head>
 
 <body>
@@ -23,6 +52,7 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="_content/BrowserInterop/scripts.js"></script>
 </body>
 
 </html>

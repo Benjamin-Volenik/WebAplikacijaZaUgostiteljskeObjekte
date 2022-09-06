@@ -1,12 +1,9 @@
-﻿@using WebAplikacijaZaUgostiteljskeObjekte.Client.Components
+﻿@using MudBlazor.Utilities
+@using WebAplikacijaZaUgostiteljskeObjekte.Client.Components
 @using WebAplikacijaZaUgostiteljskeObjekte.Shared
 @inherits LayoutComponentBase
 
-@inject HttpClient Http
-@inject AuthenticationStateProvider AuthStateProvider
-@inject ISyncLocalStorageService localStorage
-
-<MudThemeProvider/>
+<MudThemeProvider Theme="customTheme"/>
 <MudDialogProvider
     FullWidth="true"
     MaxWidth="MaxWidth.ExtraSmall"
@@ -22,13 +19,10 @@
     <MudAppBar Color="Color.Dark" Elevation="1">
         <MudText Typo="Typo.h5" Class="ml-3">WAZPUO</MudText>
         <MudButton Href="/" Class="pa-4 ml-5 text-white">Početna</MudButton>
+        <MudButton Href="/mapa" Class="pa-4 ml-5 text-white">Karta</MudButton>
         <MudSpacer />
-        <AuthorizeView>
-        @if(ugostiteljskiObjekt != null)
-        {
-            <MudButton Class="text-white" Href="@($"/ugostiteljskiobjekti/{ugostiteljskiObjekt.UgostiteljskiObjektiId}")">Moja stranica</MudButton>          
-        }    
-        </AuthorizeView>
+        <PrijaviBug />
+        <MySite />
         <AuthLinks />
     </MudAppBar>
     <MudMainContent>
@@ -36,23 +30,12 @@
     </MudMainContent>
 </MudLayout>
 
-@code
-{
-    public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
-
-    public UgostiteljskiObjektiModel ugostiteljskiObjekt { get; set; } = new();
-
-
-    protected override async Task OnInitializedAsync()
+@code {
+    MudTheme customTheme = new MudTheme()
     {
-        ugostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
-        string email = localStorage.GetItemAsString("email");
-
-        if(email != null)
+        Palette = new Palette()
         {
-            string result = email.Trim('"');
-            ugostiteljskiObjekt = ugostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == result);
-
+            Primary = new MudColor("#000000")
         }
-     }
+    };
 }

@@ -1,3 +1,4 @@
+using GoogleMaps.LocationServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -18,6 +19,9 @@ builder.Services.AddScoped<IUgostiteljskiObjektiService, UgostiteljskiObjektiSer
 builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IBugService, BugService>();
+builder.Services.AddScoped<IDrinkService, DrinkService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7058") });
 
 builder.Services.AddSwaggerGen();
