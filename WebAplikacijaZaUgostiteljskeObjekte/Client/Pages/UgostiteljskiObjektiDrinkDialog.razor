@@ -1,0 +1,60 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@inject ISnackbar snackbar
+@inject NavigationManager navigationManager
+
+
+<EditForm Model="NovoPice" OnValidSubmit="DodajNovoPice">
+    <MudDialog>
+        <DialogContent>
+            <div class="d-flex flex-column py-1">
+                <MudText>Unesite naziv pića</MudText>
+                <MudTextField @bind-Value="NovoPice.NazivPica" For="@(() => NovoPice.NazivPica)"/>
+                <MudText>Unesite opis pića</MudText>
+                <MudTextField @bind-Value="NovoPice.Opis" For="@(() => NovoPice.Opis)"/>
+                <MudText>Unesite normativ pića</MudText>
+                <MudTextField @bind-Value="NovoPice.PiceNormativ" For="@(() => NovoPice.PiceNormativ)"/>
+                <MudText>Unesite cijenu pića</MudText>
+                <MudNumericField @bind-Value="NovoPice.Cjena" For="@(() => NovoPice.Cjena)"/>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Close">Odustani</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Unesi jelo</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    public List<DrinksModel> UONovoPice { get; set; } = new();
+
+    public DrinksModel NovoPice { get; set; } = new();
+
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+
+    [Parameter] public int UOId { get; set; }
+
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+
+    protected async override Task OnParametersSetAsync()
+    {
+        UONovoPice = await Http.GetFromJsonAsync<List<DrinksModel>>("api/Drinks");
+        NovoPice.UgostiteljskiObjektiId = UOId;
+    }
+
+    async Task DodajNovoPice()
+    {
+        await Http.PostAsJsonAsync<DrinksModel>("api/Drinks", NovoPice);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Uspješno ste dodali piće.");
+        MudDialog.Close(DialogResult.Ok(true));
+
+    }
+
+
+}

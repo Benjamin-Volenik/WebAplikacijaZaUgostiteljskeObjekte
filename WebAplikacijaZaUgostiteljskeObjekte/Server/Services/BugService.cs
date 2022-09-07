@@ -31,5 +31,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             }
             return list;
         }
+
+        public async Task<BugModel> UrediStanje(int id, BugModel urediStanje)
+        {
+            _context.Update(urediStanje);
+            await _context.SaveChangesAsync();
+            return urediStanje;
+        }
     }
 }

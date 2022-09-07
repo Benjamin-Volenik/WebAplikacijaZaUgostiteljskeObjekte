@@ -26,11 +26,18 @@
 
     public BugModel Bug { get; set; } = new();
 
+    public List<UserModel> Korisnici { get; set; } = new();
+
+    public UserModel Korisnik { get; set; } = new();
 
     void Close() => MudDialog.Close(DialogResult.Ok(true));
 
     protected async override Task OnParametersSetAsync()
     {
+        Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+        Korisnik = Korisnici.FirstOrDefault(u => u.Email == UEmail);
+
+        Bug.UserIdBug = Korisnik.UserId;
         Bug.UserEmail = UEmail;
         Bug.BugStaus = 0;
         Bug.BugVrijeme = DateTime.Now;

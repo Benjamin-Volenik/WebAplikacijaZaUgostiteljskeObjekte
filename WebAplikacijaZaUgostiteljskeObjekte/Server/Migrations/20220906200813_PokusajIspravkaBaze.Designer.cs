@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 
@@ -11,9 +12,10 @@ using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
 namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 {
     [DbContext(typeof(Data))]
-    partial class DataModelSnapshot : ModelSnapshot
+    [Migration("20220906200813_PokusajIspravkaBaze")]
+    partial class PokusajIspravkaBaze
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +68,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                     b.Property<DateTime>("CommentTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UgostiteljskiObjektId")
+                    b.Property<int>("UgostiteljskiObjektiId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -74,7 +76,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("UgostiteljskiObjektId");
+                    b.HasIndex("UgostiteljskiObjektiId");
 
                     b.HasIndex("UserId");
 
@@ -189,16 +191,16 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                     b.Property<DateTime>("BugVrijeme")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserEmail")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserIdBug")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("BugId");
 
-                    b.HasIndex("UserIdBug");
+                    b.HasIndex("UserId");
 
                     b.ToTable("PrijavljeniBugovi");
                 });
@@ -311,73 +313,73 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Comment", b =>
                 {
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjekti")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjektIdd")
                         .WithMany()
-                        .HasForeignKey("UgostiteljskiObjektId")
+                        .HasForeignKey("UgostiteljskiObjektiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "User")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "UserIdd")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UgostiteljskiObjekti");
+                    b.Navigation("UgostiteljskiObjektIdd");
 
-                    b.Navigation("User");
+                    b.Navigation("UserIdd");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Drinks", b =>
                 {
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjekti")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjektiIdd")
                         .WithMany()
                         .HasForeignKey("UgostiteljskiObjektiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UgostiteljskiObjekti");
+                    b.Navigation("UgostiteljskiObjektiIdd");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Jela", b =>
                 {
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjekti")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjektiIdd")
                         .WithMany()
                         .HasForeignKey("UgostiteljskiObjektiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UgostiteljskiObjekti");
+                    b.Navigation("UgostiteljskiObjektiIdd");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Ocjene", b =>
                 {
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjekti")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjektiIdd")
                         .WithMany()
                         .HasForeignKey("UgostiteljskiObjektiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "User")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "UserIdd")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UgostiteljskiObjekti");
+                    b.Navigation("UgostiteljskiObjektiIdd");
 
-                    b.Navigation("User");
+                    b.Navigation("UserIdd");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.PrijavljeniBugovi", b =>
                 {
-                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "User")
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "UserIdBug")
                         .WithMany()
-                        .HasForeignKey("UserIdBug")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserIdBug");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", b =>

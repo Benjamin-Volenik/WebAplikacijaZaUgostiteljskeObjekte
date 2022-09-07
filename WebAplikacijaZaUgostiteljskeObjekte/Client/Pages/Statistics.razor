@@ -1,35 +1,94 @@
-﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+﻿@using System.Text.RegularExpressions
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
 @inject HttpClient Http
-@page "/Stat"
+@page "/statistika"
 
-<h3>Statistics</h3>
+<h3>Statstika</h3>
 
-<MudPaper Class="pa-4">
-    <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels"  @bind-SelectedIndex="@Index" Width="300px" Height="300px" />
-</MudPaper>
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="Statistika: tip korisnika">
+        <MudPaper Class="pa-4">
+        <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels"  @bind-SelectedIndex="@Index" Width="300px" Height="300px" />
+        </MudPaper>
 
-@if(Index == 0)
-{
-    <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj administratora: @Admini.Count()</MudText>
-}
-else if(Index == 1)
-{
-    <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj korisnika: @Korisnici.Count()</MudText>
-}
-else if(Index == 2)
-{
-    <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj ugostiteljskih objekata: @UgostiteljskiObjektiOdobreni.Count()</MudText>
-}
+        @if(Index == 0)
+        {
+            <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj administratora: @Admini.Count()</MudText>
+        }
+        else if(Index == 1)
+        {
+            <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj korisnika: @Korisnici.Count()</MudText>
+        }
+        else if(Index == 2)
+        {
+            <MudText Class="pa-4 mt-2 d-flex justify-center" Typo="Typo.h6">Broj ugostiteljskih objekata: @UgostiteljskiObjektiOdobreni.Count()</MudText>
+        }
+    </MudTabPanel>
+     <MudTabPanel Text="Prikaz ugostiteljskih objekata po tipu">
+        <MudPaper Class="pa-4">
+            <MudSelect @bind-value="OdabraniTipUO" T="string" Label="Tip ugostiteljskog objekta" Placeholder="Odaberite tip" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
+                <MudSelectItem T="string" Value="@("/")">Svi tipovi</MudSelectItem>
+                <MudSelectItem T="string" Value="@("Restoran")"/>
+                <MudSelectItem T="string" Value="@("Pizzeria")"/>
+                <MudSelectItem T="string" Value="@("Slasticarnica")">Slastičarnica</MudSelectItem>
+                <MudSelectItem T="string" Value="@("Fast food")"/>
+                <MudSelectItem T="string" Value="@("Kavana")"/>
+                <MudSelectItem T="string" Value="@("Pivnica")"/>
+                <MudSelectItem T="string" Value="@("Caffe bar")"/>
+                <MudSelectItem T="string" Value="@("Bistro")"/>
+            </MudSelect>
+            <MudButton OnClick="TipUgostiteljskogObjekta" Class="d-block ml-auto mr-auto mt-5" Variant="Variant.Filled" Color="Color.Primary">Odaberi</MudButton>
+        </MudPaper>
+        <MudTable Class="pa-10" Items="@UgostiteljskiObjektiTip" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+            <HeaderContent>
+                <MudTh>Naziv</MudTh>
+                <MudTh>Email</MudTh>
+                <MudTh>Kontakt</MudTh>
+                <MudTh>Tip ugostiteljskog objekta</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Naziv">@context.UgostiteljskiObjektiNaziv</MudTd>
+                <MudTd DataLabel="Email">@context.UgostiteljskiObjektiEmali</MudTd>
+                <MudTd DataLabel="Kontakt">@Regex.Replace(context.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1 $2 $3")</MudTd>
+                <MudTd DataLabel="Tip ugostiteljskog objekta">@context.UgostiteljskiObjektiTip</MudTd>
+            </RowTemplate>
+        </MudTable>
+
+    </MudTabPanel>
+    <MudTabPanel Text="Statistika: broj ugostiteljskih objekata po gradovima">
+        <MudPaper Class="pa-4">
+            <div class="d-flex align-center justify-center pa-2 ml-auto mr-auto" style="width:500px">
+                <MudTextField Class="pa-4 mt-5 d-flex justify-center ml-auto mr-auto" MaxWidth="MaxWidth.Small"  @onkeyup="Enter" @bind-Value="OdabraniGrad" Label="Naziv grada" Placeholder="Unesite naziv grada" Variant="Variant.Outlined"></MudTextField>
+                <MudButton Class="pa-4 mt-5 d-flex justify-center ml-auto mr-auto" OnClick="UgostiteljskiObjektiGrad" Variant="Variant.Filled" Color="Color.Primary">Odaberi</MudButton>
+            </div>
+            @if(OdabraniGrad != null)
+            {
+                <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">Broj ugostiteljskih objekata u gradu @OdabraniGrad: @UgostiteljskiObjektiGradovi.Count() </MudText>
+            }
+            else
+            {
+                <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">Unesite naziv Grada!</MudText>
+            }
+        </MudPaper>
+    </MudTabPanel>
+</MudTabs>
+
 
 @code {
     public int Index = -1;
 
     public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
     public List<UgostiteljskiObjektiModel> UgostiteljskiObjektiOdobreni { get; set; } = new();
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjektiTip{ get; set; } = new();
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjektiGradovi{ get; set; } = new();
     public List<UserModel> Korisnici { get; set; } = new();
     public List<AdminModel> Admini { get; set; } = new();
+    public string OdabraniTipUO = "/";
+    public string OdabraniGrad;
     double[] data = { };
+    double[] dataTipUO = { };
     string[] labels = { "Administratori","Korisnici","Ugostiteljski objekti"};
+    string[] labelsTipUO = { "Restoran","Pizzeria","Slastičarnica","Fast food","Kavana","Pivnica","Caffe bar","Bistro"};
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,6 +96,7 @@ else if(Index == 2)
         Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
         Admini = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
         UgostiteljskiObjektiOdobreni = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiStanje == "Odobreno");
+        UgostiteljskiObjektiTip = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiStanje == "Odobreno");   
 
         var new_data = new double[3];
         for (int i = 0; i < new_data.Length; i++)
@@ -55,7 +115,34 @@ else if(Index == 2)
             }
         }
         data = new_data;
+
     }
 
+    public void TipUgostiteljskogObjekta()
+    {
+        if(OdabraniTipUO == "/")
+        {
+            UgostiteljskiObjektiTip = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiStanje == "Odobreno");            
+        }
+        else
+        {
+            UgostiteljskiObjektiTip = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiTip == OdabraniTipUO && uo.UgostiteljskiObjektiStanje == "Odobreno");
+        }
+    }
 
+    public void UgostiteljskiObjektiGrad()
+    {
+        if(OdabraniGrad != null)
+        {
+            UgostiteljskiObjektiGradovi = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiGrad.Contains(OdabraniGrad, StringComparison.OrdinalIgnoreCase) && uo.UgostiteljskiObjektiStanje == "Odobreno" );
+        }
+    }
+
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            UgostiteljskiObjektiGrad();
+        }
+    }
 }

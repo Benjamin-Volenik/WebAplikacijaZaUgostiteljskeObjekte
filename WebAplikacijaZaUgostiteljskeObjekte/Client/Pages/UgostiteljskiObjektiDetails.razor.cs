@@ -139,6 +139,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             });
         }
 
+        public void OpenDialogDrink()
+        {
+            DialogService.Show<UgostiteljskiObjektiDrinkDialog>("Dodaj novo piće", new DialogParameters
+            {
+                ["UOId"] = ugostiteljskiObjekt.UgostiteljskiObjektiId
+            });
+        }
+
         public async Task DodajKomentar()
         {
             if (Comment.CommentText != null)
@@ -146,7 +154,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
                 Comment.UgostiteljskiObjektId = ugostiteljskiObjekt.UgostiteljskiObjektiId;
                 Comment.UserId = Korisnik.UserId;
                 await Http.PostAsJsonAsync<AddComment>("api/Comment", Comment);
-                Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+                Komentari = await Http.GetFromJsonAsync<List<CommentModel>>("api/Comment");
                 Comment.CommentText = null;
                 snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
                 snackbar.Add("Uspješno ste dodali komentar.");
@@ -165,7 +173,9 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             Grade.UserId = Korisnik.UserId;
             Grade.Ocjena = Int32.Parse(SelectedOption);
             await Http.PostAsJsonAsync<AddGrade>("api/Ocjene", Grade);
-            navigationManager.NavigateTo("/ugostiteljskiobjekti/" + Id, true);
+            Ocjene = await Http.GetFromJsonAsync<List<OcjeneModel>>("api/Ocjene");
+            sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
+            OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
             snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
             snackbar.Add("Vaša ocjena je zabilježena");
         }
@@ -174,6 +184,8 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         {
             await Http.DeleteAsync($"api/Comment/{komentar.CommentId}");
             Korisnici.FirstOrDefault(k => k.UserId == komentar.UserId).Comments.Remove(komentar);
+            snackbar.Add("Obrisali ste komentar");
+            Komentari = await Http.GetFromJsonAsync<List<CommentModel>>("api/Comment");
         }
 
         public async Task ObrisiJelo(DishModel jelo)

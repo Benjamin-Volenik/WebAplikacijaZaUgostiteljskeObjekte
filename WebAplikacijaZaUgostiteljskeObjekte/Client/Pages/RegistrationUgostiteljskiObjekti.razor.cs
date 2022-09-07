@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using System.Net.Http.Json;
 using WebAplikacijaZaUgostiteljskeObjekte.Shared;
@@ -13,6 +15,10 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
         public CreateUO NoviUO { get; set; } = new();
+
+        public IList<IBrowserFile> files = new List<IBrowserFile>();
+
+        public IFormFile coverphoto { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,5 +42,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
 
         }
+
+        private void UploadFiles(InputFileChangeEventArgs e)
+        {
+            foreach (var file in e.GetMultipleFiles())
+            {
+            }
+            //TODO upload the files to the server
+        }
+
     }
 }

@@ -91,7 +91,7 @@
                                         <AuthorizeView>
                                         @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
                                         {
-                                            <MudButton Class="d-block ml-auto mt-5" OnClick="OpenDialogDish" Variant="Variant.Filled" Color="Color.Primary">
+                                            <MudButton Class="d-block ml-auto mt-5" OnClick="OpenDialogDrink" Variant="Variant.Filled" Color="Color.Primary">
                                                 Dodaj piće
                                             </MudButton>
                                         }
@@ -126,7 +126,7 @@
                         {
                             foreach(var komentar in Komentari)
                             {
-                                if(komentar.UgostiteljskiObjektId == ugostiteljskiObjekt.UgostiteljskiObjektiId)
+                                if(komentar.UgostiteljskiObjektId == ugostiteljskiObjekt.UgostiteljskiObjektiId && komentar.UserId == korisnik.UserId)
                                 {
                                     <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
                                     <MudPaper Class="pa-4 d-flex justify-space-between" Outlined="true">@korisnik.Name @korisnik.LastName : <br /> @komentar.CommentText 

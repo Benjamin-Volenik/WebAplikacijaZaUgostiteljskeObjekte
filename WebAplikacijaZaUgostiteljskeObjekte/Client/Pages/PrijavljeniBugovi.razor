@@ -1,0 +1,52 @@
+﻿@page "/prijavljenibugovi"
+
+@using System.Net.Http.Json
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@inject ISnackbar snackbar
+
+<h3>PrijavljeniBugovi</h3>
+
+<MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Korisnik email</MudTh>
+        <MudTh>Bug text</MudTh>
+        <MudTh>Bug status</MudTh>
+        <MudTh>Vrijeme prijave</MudTh>
+        <MudTh>Označi kao riješeno</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Korisnik email">@context.UserEmail</MudTd>
+        <MudTd DataLabel="Bug text">@context.BugText</MudTd>
+        @if(context.BugStaus == 0)
+        {
+            <MudTd DataLabel="Bug status">Nije riješeno</MudTd>            
+        }
+        <MudTd DataLabel="Vrijeme prijave">@context.BugVrijeme</MudTd>
+        <MudTd DataLabel="Označi kao riješeno"><MudButton @onclick="() => UpdateStanje(context.BugId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+
+    public List<BugModel> Bugovi { get; set; } = new();
+    public List<BugModel> values = new();
+    public BugModel BugoviOdg { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Bugovi = await Http.GetFromJsonAsync<List<BugModel>>("api/Bug");
+
+        values = Bugovi.FindAll(b => b.BugStaus == 0);
+    }
+
+    public async Task UpdateStanje(int id)
+    {
+        BugoviOdg = Bugovi.FirstOrDefault(b => b.BugId == id);
+        BugoviOdg.BugStaus = 1;
+        await Http.PutAsJsonAsync("api/Bug", BugoviOdg);
+        values = Bugovi.FindAll(b => b.BugStaus == 0);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Prijavljeni bug označen kao riješen!");
+    }
+}
