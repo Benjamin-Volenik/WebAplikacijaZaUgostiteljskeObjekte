@@ -8,11 +8,11 @@
     <MudDialog>
         <DialogContent>
             <div class="d-flex flex-column py-1">
-                <MudText>Unesite naziv jela</MudText>
+                <MudText Class="mt-5">Unesite naziv jela</MudText>
                 <MudTextField @bind-Value="NovoJelo.NazivJela" For="@(() => NovoJelo.NazivJela)"/>
-                <MudText>Unesite opis jela</MudText>
+                <MudText Class="mt-5">Unesite opis jela</MudText>
                 <MudTextField @bind-Value="NovoJelo.Opis" For="@(() => NovoJelo.Opis)"/>
-                <MudText>Unesite cijenu jela</MudText>
+                <MudText Class="mt-5">Unesite cijenu jela</MudText>
                 <MudNumericField @bind-Value="NovoJelo.Cjena" For="@(() => NovoJelo.Cjena)"/>
             </div>
         </DialogContent>

@@ -23,7 +23,7 @@
         }
     </script>
     <script>
-        function geocodeAddress(obj,obj2) {
+        function geocodeAddress(lista) {
             var latlng = new google.maps.LatLng(45.815399, 15.966568);
             var options = {
                 zoom: 8, center: latlng,
@@ -31,13 +31,19 @@
             };
             var resultsMap = new google.maps.Map(document.getElementById("map"), options);
 
-            var uolatlong = new google.maps.LatLng(obj,obj2);
-            var marker = new google.maps.Marker({
-                map: resultsMap,
-                position: uolatlong
-            });
-            console.log(uolatlong);
-            marker.setMap(resultsMap);
+            for (var i = 0; i < lista.length; i++) {
+                if (lista[i].ugostiteljskiObjektiStanje == "Odobreno") {
+
+                    var uolatlong = new google.maps.LatLng(lista[i].ugostiteljskiObjektiLatituda, lista[i].ugostiteljskiObjektiLongituda);
+                    var marker = new google.maps.Marker({
+                        map: resultsMap,
+                        position: uolatlong
+                    });
+                    console.log(lista[i])
+                    marker.setMap(resultsMap);
+                }
+
+            }
         }
     </script>
 </head>

@@ -7,20 +7,20 @@
 <EditForm Model="NovoPice" OnValidSubmit="DodajNovoPice">
     <MudDialog>
         <DialogContent>
-            <div class="d-flex flex-column py-1">
-                <MudText>Unesite naziv pića</MudText>
+            <div class="">
+                <MudText Class="mt-5">Unesite naziv pića</MudText>
                 <MudTextField @bind-Value="NovoPice.NazivPica" For="@(() => NovoPice.NazivPica)"/>
-                <MudText>Unesite opis pića</MudText>
+                <MudText Class="mt-5">Unesite opis pića</MudText>
                 <MudTextField @bind-Value="NovoPice.Opis" For="@(() => NovoPice.Opis)"/>
-                <MudText>Unesite normativ pića</MudText>
-                <MudTextField @bind-Value="NovoPice.PiceNormativ" For="@(() => NovoPice.PiceNormativ)"/>
-                <MudText>Unesite cijenu pića</MudText>
+                <MudText Class="mt-5">Unesite normativ pića</MudText>
+                <MudNumericField @bind-Value="NovoPice.PiceNormativ" For="@(() => NovoPice.PiceNormativ)"/>
+                <MudText Class="mt-5">Unesite cijenu pića</MudText>
                 <MudNumericField @bind-Value="NovoPice.Cjena" For="@(() => NovoPice.Cjena)"/>
             </div>
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Close">Odustani</MudButton>
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Unesi jelo</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Unesi piće</MudButton>
         </DialogActions>
     </MudDialog>
 </EditForm>
@@ -52,6 +52,7 @@
         await Http.PostAsJsonAsync<DrinksModel>("api/Drinks", NovoPice);
         snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         snackbar.Add("Uspješno ste dodali piće.");
+        navigationManager.NavigateTo("/ugostiteljskiobjekti/" + UOId, true);
         MudDialog.Close(DialogResult.Ok(true));
 
     }

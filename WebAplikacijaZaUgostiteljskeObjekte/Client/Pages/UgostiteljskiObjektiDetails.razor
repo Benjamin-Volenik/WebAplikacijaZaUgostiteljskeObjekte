@@ -16,105 +16,148 @@
             <MudItem xs="12" sm="7">
                 <MudPaper Class="pa-4">
                     <MudText Typo="Typo.h6"><b>Jelovnik:</b></MudText><br><br>
-                    <MudCarousel Class="mud-width-full pa-4" Style="height:1000px;" ShowArrows="false" ShowBullets="true" TData="object" AutoCycle="false">
-                        <MudCarouselItem Transition="Transition.Fade">
-                            <div>
-                                <MudPaper Class="pa-4">
-                                    <MudText Typo="Typo.h6"><b>Jela:</b></MudText><br><br>
-                                        <MudTable RowsPerPage="10" Items="@values" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
-                                            <HeaderContent>
-                                                <MudTh>Naziv jela</MudTh>
-                                                <MudTh>Opis</MudTh>
-                                                <MudTh>Cjena</MudTh>
-                                                @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                                                {
-                                                    <MudTh>Obriši</MudTh>
-                                                }
+                        <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+                                <MudTabPanel Text="Jela">
+                                    <MudPaper Class="pa-4">
+                                        <MudText Typo="Typo.h6"><b>Jela:</b></MudText><br><br>
+                                            <MudTable RowsPerPage="10" Items="@values" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                                                <HeaderContent>
+                                                    <MudTh>Naziv jela</MudTh>
+                                                    <MudTh>Opis</MudTh>
+                                                    <MudTh>Cjena</MudTh>
+                                                    @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                                                    {
+                                                        <AuthorizeView Context="another_name">
+                                                        <MudTh>Obriši</MudTh>
+                                                        </AuthorizeView>
+                                                    }
 
-                                            </HeaderContent>
-                                            <RowTemplate>
-                                                <MudTd DataLabel="Naziv jela">@context.NazivJela</MudTd>
-                                                <MudTd DataLabel="Opis">@context.Opis</MudTd>
-                                                <MudTd DataLabel="Cjena">@Convert.ToSingle(context.Cjena) kn</MudTd>
-                                                @if (ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                                                {
-                                                    <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
-                                                    <MudTd DataLabel="Obriši"><MudButton @onclick="() => ObrisiJelo(context)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="fas fa-trash" /></MudButton></MudTd>
-                                                }
-                                            </RowTemplate>
-                                            <PagerContent>
-                                                <MudTablePager PageSizeOptions="new int[] { 5, 10, 20, 30, 50 }" />
-                                            </PagerContent>
-                                        </MudTable>
-                                        <AuthorizeView>
-                                        @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                                        {
-                                            <MudButton Class="d-block ml-auto mt-5" OnClick="OpenDialogDish" Variant="Variant.Filled" Color="Color.Primary">
-                                                Dodaj jelo
-                                            </MudButton>
-                                        }
-                                        </AuthorizeView>
-                                </MudPaper>
-                            </div>
-                        </MudCarouselItem>
-                        <MudCarouselItem Transition="Transition.Fade">
-                            <div>
-                                <MudPaper Class="pa-4">
-                                    <MudText Typo="Typo.h6"><b>Pića:</b></MudText><br><br>
-                                        <MudTable RowsPerPage="10" Items="@drinksValues" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
-                                            <HeaderContent>
-                                                <MudTh>Naziv pića</MudTh>
-                                                <MudTh>Opis</MudTh>
-                                                <MudTh>Normativ</MudTh>
-                                                <MudTh>Cjena</MudTh>
-                                                @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                                                {
-                                                    <MudTh>Obriši</MudTh>
-                                                }
+                                                </HeaderContent>
+                                                <RowTemplate>
+                                                    <MudTd DataLabel="Naziv jela">@context.NazivJela</MudTd>
+                                                    <MudTd DataLabel="Opis">@context.Opis</MudTd>
+                                                    <MudTd DataLabel="Cjena">@Convert.ToSingle(context.Cjena) kn</MudTd>
+                                                    @if (ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                                                    {
+                                                        <AuthorizeView Context="contex_name">
+                                                        <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
+                                                        <MudTd DataLabel="Obriši"><MudButton @onclick="() => ObrisiJelo(context)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="fas fa-trash" /></MudButton></MudTd>
+                                                        </AuthorizeView>
+                                                    }
+                                                </RowTemplate>
+                                                <PagerContent>
+                                                    <MudTablePager PageSizeOptions="new int[] { 5, 10, 20, 30, 50 }" />
+                                                </PagerContent>
+                                            </MudTable>
+                                            <AuthorizeView>
+                                            @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                                            {
+                                                <MudButton Class="d-block ml-auto mt-5" OnClick="OpenDialogDish" Variant="Variant.Filled" Color="Color.Primary">
+                                                    Dodaj jelo
+                                                </MudButton>
+                                            }
+                                            </AuthorizeView>
+                                    </MudPaper>
+                                </MudTabPanel>
+                                 <MudTabPanel Text="Pića">
+                                     <MudPaper Class="pa-4">
+                                        <MudText Typo="Typo.h6"><b>Pića:</b></MudText><br><br>
+                                            <MudTable RowsPerPage="10" Items="@drinksValues" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                                                <HeaderContent>
+                                                    <MudTh>Naziv pića</MudTh>
+                                                    <MudTh>Opis</MudTh>
+                                                    <MudTh>Normativ</MudTh>
+                                                    <MudTh>Cjena</MudTh>
+                                                    @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                                                    {
+                                                        <AuthorizeView Context="contexxt_anothername">
+                                                        <MudTh>Obriši</MudTh>
+                                                        </AuthorizeView>
+                                                    }
 
-                                            </HeaderContent>
-                                            <RowTemplate>
-                                                <MudTd DataLabel="Naziv pića">@context.NazivPica</MudTd>
-                                                <MudTd DataLabel="Opis">@context.Opis</MudTd>
-                                                <MudTd DataLabel="Normativ">@context.PiceNormativ</MudTd>
-                                                <MudTd DataLabel="Cjena">@Convert.ToSingle(context.Cjena) kn</MudTd>
-                                                @if (ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                                                {
-                                                    <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
-                                                    <MudTd DataLabel="Obriši"><MudButton @onclick="() => ObrisiPice(context)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="fas fa-trash" /></MudButton></MudTd>
-                                                }
-                                            </RowTemplate>
-                                            <PagerContent>
-                                                <MudTablePager PageSizeOptions="new int[] { 5, 10, 20, 30, 50 }" />
-                                            </PagerContent>
-                                        </MudTable>
-                                        <AuthorizeView>
-                                        @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                                        {
-                                            <MudButton Class="d-block ml-auto mt-5" OnClick="OpenDialogDrink" Variant="Variant.Filled" Color="Color.Primary">
-                                                Dodaj piće
-                                            </MudButton>
-                                        }
-                                        </AuthorizeView>
-                                </MudPaper>
-                            </div>
-                        </MudCarouselItem>
-                    </MudCarousel>
+                                                </HeaderContent>
+                                                <RowTemplate>
+                                                    <MudTd DataLabel="Naziv pića">@context.NazivPica</MudTd>
+                                                    <MudTd DataLabel="Opis">@context.Opis.ToUpper()</MudTd>
+                                                    <MudTd DataLabel="Normativ">@context.PiceNormativ l</MudTd>
+                                                    <MudTd DataLabel="Cjena">@Convert.ToSingle(context.Cjena) kn</MudTd>
+                                                    @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                                                    {
+                                                        <AuthorizeView Context="context_name">
+                                                        <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
+                                                        <MudTd DataLabel="Obriši"><MudButton @onclick="() => ObrisiPice(context)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="fas fa-trash" /></MudButton></MudTd>
+                                                        </AuthorizeView>
+                                                    }
+                                                </RowTemplate>
+                                                <PagerContent>
+                                                    <MudTablePager PageSizeOptions="new int[] { 5, 10, 20, 30, 50 }" />
+                                                </PagerContent>
+                                            </MudTable>
+                                            <AuthorizeView>
+                                            @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                                            {
+                                                <MudButton Class="d-block ml-auto mt-5" OnClick="OpenDialogDrink" Variant="Variant.Filled" Color="Color.Primary">
+                                                    Dodaj piće
+                                                </MudButton>
+                                            }
+                                            </AuthorizeView>
+                                    </MudPaper>
+                                </MudTabPanel>
+
+                        </MudTabs>
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="5">
                 <MudPaper Class="pa-4 mud-height-full">
-                    <MudText Typo="Typo.h6"><b>Kontakt:</b></MudText><br><br>
-                    <MudText Class="d-flex" Typo="Typo.h6"><b>@Regex.Replace(ugostiteljskiObjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1 $2 $3")</b>
-                        <AuthorizeView>
-                            @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali)
-                            {
-                                <MudButton Class="ml-5" OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-                                    <MudIcon Icon="@Icons.Filled.Edit"></MudIcon> Uredi
-                                </MudButton>    
-                            }
-                        </AuthorizeView>
+                    <MudText Class="d-flex justify-content-center align-items-center mt-5" Typo="Typo.h6"><b>Kontakt:</b></MudText><br><br>
+                    <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>@Regex.Replace(ugostiteljskiObjekt.UgostiteljskiObjektiKontakt ?? "111223333", @"(\d{3})(\d{3})(\d{3})", "$1 $2 $3")</b>
                     </MudText>
+                    <MudDivider />
+                    <MudText Class="d-flex justify-content-center align-items-center mt-5" Typo="Typo.h6"><b>Radno vrijeme (pon-pet):</b></MudText><br><br>
+                    <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>@ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijeme h</b>
+                    </MudText>
+
+                    <MudText Class="d-flex justify-content-center align-items-center mt-5" Typo="Typo.h6"><b>Radno vrijeme (sub):</b></MudText><br><br>
+                    @if(ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijemeSub == "0")
+                    {
+                        <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>NE RADIMO!</b></MudText>
+                    }
+                    else
+                    {
+                        <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>@ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijemeSub h</b>
+                        </MudText>
+                    }
+                    <MudDivider />
+                    <MudText Class="d-flex justify-content-center align-items-center mt-5" Typo="Typo.h6"><b>Radno vrijeme (ned):</b></MudText><br><br>
+                    @if(ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijemeNed == "0")
+                    {
+                        <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>NE RADIMO!</b></MudText>
+                    }
+                    else
+                    {
+                        <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>@ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijemeNed h</b>
+                        </MudText>
+                    }
+                    <MudDivider />
+                    <MudText Class="d-flex justify-content-center align-items-center mt-5" Typo="Typo.h6"><b>Radno vrijeme (praznici):</b></MudText><br><br>
+                    @if(ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijemeNed == "0")
+                    {
+                        <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>NE RADIMO!</b></MudText>
+                    }
+                    else
+                    {
+                        <MudText Class="d-flex justify-content-center align-items-center" Typo="Typo.h6"><b>@ugostiteljskiObjekt.UgostiteljskiObjektiRadnoVrijemePraznici h</b>
+                        </MudText>
+                    }
+                    <MudDivider Light="false" />
+                    <AuthorizeView>
+                        @if(ugostiteljskiObjektEmail.UgostiteljskiObjektiEmali == ugostiteljskiObjekt.UgostiteljskiObjektiEmali || Admin != null)
+                        {
+                            <MudButton Class="d-block ml-auto mr-auto mt-5" OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+                            <MudIcon Icon="@Icons.Filled.Edit"></MudIcon> Uredi
+                            </MudButton>    
+                        }
+                    </AuthorizeView>
                 </MudPaper>
             </MudItem>
         </MudGrid>
@@ -139,6 +182,12 @@
                                             </AuthorizeView>
                                         }
 
+                                    }
+                                    else if(Admin != null)
+                                    {
+                                            <AuthorizeView>
+                                            <MudButton @onclick="() => DeleteComment(komentar)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="fas fa-trash" /></MudButton>
+                                            </AuthorizeView>
                                     }
                                     </MudPaper>
                                         
@@ -168,7 +217,7 @@
                             <MudRadio Option="@("4")" Color="Color.Primary" Placement="Placement.Bottom">4</MudRadio>
                             <MudRadio Option="@("5")" Color="Color.Primary" Placement="Placement.Bottom">5</MudRadio>
                             </MudRadioGroup>
-                            <MudButton Class="d-flex justify-content-center ma-auto mt-10" Variant="Variant.Filled" Color="Color.Primary" OnClick="DodajOcjenu">Ocjeni</MudButton>  
+                            <MudButton Class="d-flex ml-auto mr-auto mt-10" Variant="Variant.Filled" Color="Color.Primary" OnClick="DodajOcjenu">Ocjeni</MudButton>  
                         }
                         else
                         {
@@ -190,7 +239,7 @@
                             @if(OcjenaKorisnika != null)
                             {
                                 <div class="d-flex align-center">
-                                    <MudButton Class="d-flex justify-content-center ma-auto mt-10" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ObrisiOcjenu(OcjenaKorisnika)">Reset</MudButton>
+                                    <MudButton Class="d-flex ml-auto mr-auto mt-10" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ObrisiOcjenu(OcjenaKorisnika)">Ponovno ocijeni</MudButton>
                                 </div> 
                             }
                            

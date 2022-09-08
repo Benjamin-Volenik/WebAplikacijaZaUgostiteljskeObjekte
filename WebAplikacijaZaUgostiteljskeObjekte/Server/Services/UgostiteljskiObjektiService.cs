@@ -33,6 +33,12 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             return list;
         }
 
+        public void UkloniUgostiteljskiObjekt(int id)
+        {
+            _context.UgostiteljskiObjekti.Remove(_context.UgostiteljskiObjekti.Find(id));
+            _context.SaveChanges();
+        }
+
         public async Task<UgostiteljskiObjektiModel> UrediKontakt(int id, UgostiteljskiObjektiModel urediKontakt)
         {
             _context.Update(urediKontakt);

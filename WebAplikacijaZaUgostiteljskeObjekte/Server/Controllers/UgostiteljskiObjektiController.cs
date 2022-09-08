@@ -46,5 +46,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
         {
             ugostiteljskiObjektiService.DodajUgostiteljskiObjekt(newUO);
         }
+
+        [HttpDelete("{id}")]
+        public void DeleteUO([FromRoute] int id)
+        {
+            ugostiteljskiObjektiService.UkloniUgostiteljskiObjekt(id);
+        }
     }
 }

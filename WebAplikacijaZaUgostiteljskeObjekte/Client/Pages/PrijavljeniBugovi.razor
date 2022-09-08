@@ -5,27 +5,29 @@
 @inject HttpClient Http
 @inject ISnackbar snackbar
 
-<h3>PrijavljeniBugovi</h3>
+<MudText Class="d-flex justify-content-center align-items-center pa-4" Typo="Typo.h3">Lista prijavljenih bugova/grešaka/problema</MudText>
 
-<MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
-    <HeaderContent>
-        <MudTh>Korisnik email</MudTh>
-        <MudTh>Bug text</MudTh>
-        <MudTh>Bug status</MudTh>
-        <MudTh>Vrijeme prijave</MudTh>
-        <MudTh>Označi kao riješeno</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Korisnik email">@context.UserEmail</MudTd>
-        <MudTd DataLabel="Bug text">@context.BugText</MudTd>
-        @if(context.BugStaus == 0)
-        {
-            <MudTd DataLabel="Bug status">Nije riješeno</MudTd>            
-        }
-        <MudTd DataLabel="Vrijeme prijave">@context.BugVrijeme</MudTd>
-        <MudTd DataLabel="Označi kao riješeno"><MudButton @onclick="() => UpdateStanje(context.BugId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
-    </RowTemplate>
-</MudTable>
+<div class="pa-4 mt-5">
+    <MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>Korisnik email</MudTh>
+            <MudTh>Bug text</MudTh>
+            <MudTh>Bug status</MudTh>
+            <MudTh>Vrijeme prijave</MudTh>
+            <MudTh>Označi kao riješeno</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Korisnik email">@context.UserEmail</MudTd>
+            <MudTd DataLabel="Bug text">@context.BugText</MudTd>
+            @if(context.BugStaus == 0)
+            {
+                <MudTd DataLabel="Bug status">Nije riješeno</MudTd>            
+            }
+            <MudTd DataLabel="Vrijeme prijave">@context.BugVrijeme</MudTd>
+            <MudTd DataLabel="Označi kao riješeno"><MudButton @onclick="() => UpdateStanje(context.BugId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
+        </RowTemplate>
+    </MudTable>
+</div>
 
 @code {
 

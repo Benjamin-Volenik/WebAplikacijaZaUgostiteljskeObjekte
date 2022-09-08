@@ -5,8 +5,8 @@
 @inject HttpClient Http
 
 
+<MudText Class="d-flex justify-content-center align-items-center pa-4" Typo="Typo.h3">Prikaz svih ugostiteljskih objekata na karti</MudText>
 
-<h3>Prikaz svih ugostiteljskih objekata na karti</h3>
 
 <div id="map" style="height:800px;width:80%;margin-left:auto;margin-right:auto;">
 </div>
@@ -22,10 +22,7 @@
         if(firstrender)
         {
             await JSRunetime.InvokeVoidAsync("initMap", null);
-            for(int i = 0;i < UgostiteljskiObjekti.Count(); i++)
-            {
-                await JSRunetime.InvokeVoidAsync("geocodeAddress",UgostiteljskiObjekti[0].UgostiteljskiObjektiLatituda,UgostiteljskiObjekti[0].UgostiteljskiObjektiLongituda);
-            }
+            await JSRunetime.InvokeVoidAsync("geocodeAddress",UgostiteljskiObjekti);
 
         }
     }

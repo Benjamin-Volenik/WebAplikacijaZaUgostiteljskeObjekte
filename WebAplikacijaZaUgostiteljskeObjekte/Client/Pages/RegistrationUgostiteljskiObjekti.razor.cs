@@ -36,6 +36,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             NoviUO.UgostiteljskiObjektiProsjecnaOcjena = 0;
             NoviUO.UgostiteljskiObjektiSlika = "https://via.placeholder.com/350x300";
             NoviUO.UgostiteljskiObjektiStanje = "Neodobreno";
+            NoviUO.UgostiteljskiObjektiSlika = files.FirstOrDefault().Name;
             await Http.PostAsJsonAsync<CreateUO>("api/UgostiteljskiObjekti", NoviUO);
             PokaziAlert();
             NavigationManager.NavigateTo("/");
@@ -47,6 +48,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         {
             foreach (var file in e.GetMultipleFiles())
             {
+                files.Add(file);
             }
             //TODO upload the files to the server
         }

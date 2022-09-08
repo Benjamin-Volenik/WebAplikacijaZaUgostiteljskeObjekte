@@ -5,8 +5,9 @@
 @inject HttpClient Http
 @inject ISnackbar snackbar
 
-<h3>RegistrationAdmin</h3>
+<MudText Class="d-flex justify-content-center align-items-center pa-4" Typo="Typo.h3">Registracije ugostiteljskih objekata</MudText>
 
+<div class="pa-4 mt-5">
 <MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>Naziv ugostiteljskog objekta</MudTh>
@@ -14,6 +15,7 @@
         <MudTh>Email ugostiteljskog objekta</MudTh>
         <MudTh>Status registracije</MudTh>
         <MudTh>Odobri registraciju</MudTh>
+        <MudTh>Poništi registraciju</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Naziv ugostiteljskog objekta">@context.UgostiteljskiObjektiNaziv</MudTd>
@@ -21,8 +23,10 @@
         <MudTd DataLabel="Email ugostiteljskog objekta">@context.UgostiteljskiObjektiEmali</MudTd>
         <MudTd DataLabel="Status registracije">@context.UgostiteljskiObjektiStanje</MudTd>
         <MudTd DataLabel="Odobri registraciju"><MudButton @onclick="() => UpdateStanje(context.UgostiteljskiObjektiId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
+        <MudTd DataLabel="Poništi registraciju"><MudButton @onclick="() => PonistiRegistraciju(context)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="@Icons.Filled.Delete" /></MudButton></MudTd>
     </RowTemplate>
 </MudTable>
+</div>
 
 
 @code {
@@ -46,6 +50,14 @@
         values = ugostiteljskiObjekti.FindAll(u => u.UgostiteljskiObjektiStanje == "Neodobreno");
         snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         snackbar.Add("Registracija ugostiteljskog objekta " + uredjeniUO.UgostiteljskiObjektiNaziv + " je odobrena!");
+    }
+
+    public async Task PonistiRegistraciju(UgostiteljskiObjektiModel ugostiteljskiObjekt)
+    {
+        await Http.DeleteAsync($"api/UgostiteljskiObjekti/{ugostiteljskiObjekt.UgostiteljskiObjektiId}");
+        ugostiteljskiObjekti.Remove(ugostiteljskiObjekt);
+        values = ugostiteljskiObjekti.FindAll(u => u.UgostiteljskiObjektiStanje == "Neodobreno");
+        snackbar.Add("Registracija ugostiteljskog objekta " + ugostiteljskiObjekt.UgostiteljskiObjektiNaziv + " nije odobrena!");
     }
 
 }

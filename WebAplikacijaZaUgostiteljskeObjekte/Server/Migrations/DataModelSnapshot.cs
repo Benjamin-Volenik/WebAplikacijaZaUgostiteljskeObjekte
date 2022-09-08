@@ -48,7 +48,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.ToTable("Admin");
+                    b.ToTable("Admin", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Comment", b =>
@@ -78,7 +78,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Komentari");
+                    b.ToTable("Komentari", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Drinks", b =>
@@ -110,7 +110,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UgostiteljskiObjektiId");
 
-                    b.ToTable("Pica");
+                    b.ToTable("Pica", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Jela", b =>
@@ -139,7 +139,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UgostiteljskiObjektiId");
 
-                    b.ToTable("Jela");
+                    b.ToTable("Jela", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Ocjene", b =>
@@ -168,7 +168,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Ocjene");
+                    b.ToTable("Ocjene", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.PrijavljeniBugovi", b =>
@@ -200,7 +200,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UserIdBug");
 
-                    b.ToTable("PrijavljeniBugovi");
+                    b.ToTable("PrijavljeniBugovi", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", b =>
@@ -277,7 +277,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("UgostiteljskiObjektiId");
 
-                    b.ToTable("UgostiteljskiObjekti");
+                    b.ToTable("UgostiteljskiObjekti", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", b =>
@@ -306,7 +306,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Korisnici");
+                    b.ToTable("Korisnici", (string)null);
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Comment", b =>

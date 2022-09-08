@@ -11,6 +11,12 @@
                 <MudText>Unesite broj telefona</MudText>
                 <MudTextField Label="Novi broj:" 
                              Mask="@(new PatternMask("000 000 000"))" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiKontakt" For="@(() => UOBrojtelefona.UgostiteljskiObjektiKontakt)"/>
+                <MudText>Unesite radno vrijeme (pon-pet)</MudText>
+                <MudTextField Placeholder="Unesite radno vrijem primjer: 07-23" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijeme" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijeme)"></MudTextField>
+                <MudText>Unesite radno vrijeme (sub)</MudText>
+                <MudTextField Placeholder="Unesite radno vrijem primjer: 07-23" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeSub" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeSub)"></MudTextField>
+                <MudText>Unesite radno vrijeme (ned)</MudText>
+                <MudTextField Placeholder="Unesite radno vrijem primjer: 07-23" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeNed" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeNed)"></MudTextField>
             </div>
         </DialogContent>
         <DialogActions>

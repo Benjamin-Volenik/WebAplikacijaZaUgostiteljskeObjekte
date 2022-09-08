@@ -48,6 +48,10 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public List<OcjeneModel> sveOcjene { get; set; } = new();
 
+        public List<AdminModel> Admini { get; set; } = new();
+
+        public AdminModel Admin { get; set; } = new();
+
         public string SelectedOption { get; set; }
 
         public float fSOcjene { get; set; }
@@ -74,13 +78,16 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
             Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
 
+            Admini = await Http.GetFromJsonAsync<List<AdminModel>>("api/Admin");
+
             string email = localStorage.GetItemAsString("email");
 
             if (email != null)
             {
                 string result = email.Trim('"');
                 Korisnik = Korisnici.FirstOrDefault(k => k.Email == result);
-                if (Korisnik == null)
+                Admin = Admini.FirstOrDefault(x => x.Email == result);
+                if (Korisnik == null && Admin == null)
                 {
                     ugostiteljskiObjektEmail = UgostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == result);
                 }
@@ -176,6 +183,8 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             Ocjene = await Http.GetFromJsonAsync<List<OcjeneModel>>("api/Ocjene");
             sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
             OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
+            UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+            ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
             snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
             snackbar.Add("Vaša ocjena je zabilježena");
         }
@@ -198,7 +207,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         public async Task ObrisiOcjenu(OcjeneModel ocjena)
         {
             await Http.DeleteAsync($"api/Ocjene/{ocjena.OcjeneId}");
-            navigationManager.NavigateTo("/ugostiteljskiobjekti/" + Id, true);
+            Ocjene = await Http.GetFromJsonAsync<List<OcjeneModel>>("api/Ocjene");
+            sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
+            UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+            ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
+            OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
 
         }
 
