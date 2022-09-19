@@ -43,11 +43,11 @@
             {
                 if(OdabraniTipUO != "/")
                 {
-                    <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">Broj ugostiteljskih objekata tipa @OdabraniTipUO: @UgostiteljskiObjektiTip.Count()</MudText>
+                    <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">@Odabranitip @UgostiteljskiObjektiTip.Count()</MudText>
                 }
                 else if(OdabraniTipUO == "/")
                 {
-                    <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">Ukupan broj ugostiteljskih objekata: @UgostiteljskiObjektiTip.Count()</MudText>
+                    <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">@Odabranitip @UgostiteljskiObjektiTip.Count()</MudText>
                 }
             }
         </MudPaper>
@@ -97,6 +97,7 @@
     public List<AdminModel> Admini { get; set; } = new();
     public string OdabraniTipUO = "/";
     public string OdabraniGrad;
+    public string Odabranitip = "Ukupan broj ugostiteljskih objekata: ";
     double[] data = { };
     double[] dataTipUO = { };
     string[] labels = { "Administratori","Korisnici","Ugostiteljski objekti"};
@@ -134,11 +135,13 @@
     {
         if(OdabraniTipUO == "/")
         {
-            UgostiteljskiObjektiTip = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiStanje == "Odobreno");            
+            UgostiteljskiObjektiTip = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiStanje == "Odobreno");
+            Odabranitip = "Ukupan broj ugostiteljskih objekata: ";
         }
         else
         {
             UgostiteljskiObjektiTip = UgostiteljskiObjekti.FindAll(uo => uo.UgostiteljskiObjektiTip == OdabraniTipUO && uo.UgostiteljskiObjektiStanje == "Odobreno");
+            Odabranitip = "Broj ugostiteljskih objekata tipa " + OdabraniTipUO + ": ";
         }
     }
 
