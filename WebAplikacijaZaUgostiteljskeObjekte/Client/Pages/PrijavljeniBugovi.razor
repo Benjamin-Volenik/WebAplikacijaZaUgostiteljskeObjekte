@@ -7,32 +7,58 @@
 
 <MudText Class="d-flex justify-content-center align-items-center pa-4" Typo="Typo.h3">Lista prijavljenih bugova/grešaka/problema</MudText>
 
-<div class="pa-4 mt-5">
-    <MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
-        <HeaderContent>
-            <MudTh>Korisnik email</MudTh>
-            <MudTh>Bug text</MudTh>
-            <MudTh>Bug status</MudTh>
-            <MudTh>Vrijeme prijave</MudTh>
-            <MudTh>Označi kao riješeno</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Korisnik email">@context.UserEmail</MudTd>
-            <MudTd DataLabel="Bug text">@context.BugText</MudTd>
-            @if(context.BugStaus == 0)
-            {
-                <MudTd DataLabel="Bug status">Nije riješeno</MudTd>            
-            }
-            <MudTd DataLabel="Vrijeme prijave">@context.BugVrijeme</MudTd>
-            <MudTd DataLabel="Označi kao riješeno"><MudButton @onclick="() => UpdateStanje(context.BugId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
-        </RowTemplate>
-    </MudTable>
-</div>
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="Prijavljeni bugovi">
+        <div class="pa-4 mt-5">
+            <MudTable Items="@values" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Korisnik email</MudTh>
+                    <MudTh>Bug text</MudTh>
+                    <MudTh>Bug status</MudTh>
+                    <MudTh>Vrijeme prijave</MudTh>
+                    <MudTh>Označi kao riješeno</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Korisnik email">@context.UserEmail</MudTd>
+                    <MudTd DataLabel="Bug text">@context.BugText</MudTd>
+                    @if(context.BugStaus == 0)
+                    {
+                        <MudTd DataLabel="Bug status">Nije riješeno</MudTd>            
+                    }
+                    <MudTd DataLabel="Vrijeme prijave">@context.BugVrijeme</MudTd>
+                    <MudTd DataLabel="Označi kao riješeno"><MudButton @onclick="() => UpdateStanje(context.BugId)" Variant="Variant.Filled" Color="Color.Success"><MudIcon Icon="@Icons.Filled.CheckCircle" /></MudButton></MudTd>
+                </RowTemplate>
+            </MudTable>
+        </div>
+    </MudTabPanel>
+    <MudTabPanel Text="Riješeni bugovi">
+        <div class="pa-4 mt-5">
+            <MudTable Items="@rijeseniBugovi" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Korisnik email</MudTh>
+                    <MudTh>Bug text</MudTh>
+                    <MudTh>Bug status</MudTh>
+                    <MudTh>Vrijeme prijave</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Korisnik email">@context.UserEmail</MudTd>
+                    <MudTd DataLabel="Bug text">@context.BugText</MudTd>
+                    @if(context.BugStaus == 1)
+                    {
+                        <MudTd DataLabel="Bug status">Riješeno</MudTd>            
+                    }
+                    <MudTd DataLabel="Vrijeme prijave">@context.BugVrijeme</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </div>
+    </MudTabPanel>
+</MudTabs>
 
 @code {
 
     public List<BugModel> Bugovi { get; set; } = new();
     public List<BugModel> values = new();
+    public List<BugModel> rijeseniBugovi = new();
     public BugModel BugoviOdg { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
@@ -40,6 +66,8 @@
         Bugovi = await Http.GetFromJsonAsync<List<BugModel>>("api/Bug");
 
         values = Bugovi.FindAll(b => b.BugStaus == 0);
+
+        rijeseniBugovi = Bugovi.FindAll(b => b.BugStaus == 1);
     }
 
     public async Task UpdateStanje(int id)
@@ -48,6 +76,7 @@
         BugoviOdg.BugStaus = 1;
         await Http.PutAsJsonAsync("api/Bug", BugoviOdg);
         values = Bugovi.FindAll(b => b.BugStaus == 0);
+        rijeseniBugovi = Bugovi.FindAll(b => b.BugStaus == 1);
         snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         snackbar.Add("Prijavljeni bug označen kao riješen!");
     }

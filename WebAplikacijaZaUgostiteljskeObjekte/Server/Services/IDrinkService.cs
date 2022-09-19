@@ -4,7 +4,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
 {
     public interface IDrinkService
     {
-        public void DodajPice(DrinksModel novoPice);
+        public void DodajPice(CreateDrink novoPice);
 
         public List<DrinksModel> Pica();
 

@@ -11,6 +11,7 @@
     <link href="WebAplikacijaZaUgostiteljskeObjekte.Client.styles.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <script src="GlobalFunctions.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD00p8zrfhHARywMZbEpoPn-RsahR6dZxI"></script>
     <script>
         function initMap() {
@@ -31,6 +32,7 @@
             };
             var resultsMap = new google.maps.Map(document.getElementById("map"), options);
 
+
             for (var i = 0; i < lista.length; i++) {
                 if (lista[i].ugostiteljskiObjektiStanje == "Odobreno") {
 
@@ -39,11 +41,21 @@
                         map: resultsMap,
                         position: uolatlong
                     });
-                    console.log(lista[i])
+                    const infowindow = new google.maps.InfoWindow({
+                        content: '<h5>' + lista[i].ugostiteljskiObjektiNaziv + '</h5><hr>' + 'Vrsta ugostiteljskog objekta: ' + lista[i].ugostiteljskiObjektiTip + '<br>' + 'Radno vrijeme: ' + lista[i].ugostiteljskiObjektiRadnoVrijeme + 'h',
+                        position: uolatlong
+                    });
                     marker.setMap(resultsMap);
+                    marker.addListener("click", () => {
+                        infowindow.open({
+                            map: resultsMap,
+                            shouldFocus: false,
+                        });
+                    });
                 }
 
             }
+
         }
     </script>
 </head>

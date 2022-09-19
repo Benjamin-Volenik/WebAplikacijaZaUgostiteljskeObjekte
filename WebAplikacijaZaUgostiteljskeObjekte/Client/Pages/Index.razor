@@ -43,14 +43,28 @@
             <MudSelectItem T="string" Value="@("Kavana")"/>
             <MudSelectItem T="string" Value="@("Pivnica")"/>
             <MudSelectItem T="string" Value="@("Caffe bar")"/>
+            <MudSelectItem T="string" Value="@("Caffe & Night Bar")"/>
             <MudSelectItem T="string" Value="@("Bistro")"/>
         </MudSelect>
-        <MudSelect @bind-value="OdabraniRadijus" T="int" Label="Radijus" Placeholder="Odaberite radijus" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
-            <MudSelectItem T="int" Value="5" />
-            <MudSelectItem T="int" Value="10" />
-            <MudSelectItem T="int" Value="15" />
-            <MudSelectItem T="int" Value="20" />
-        </MudSelect>
+        @if(string.IsNullOrEmpty(OdabraniGrad))
+        {
+            <MudSelect Disabled="false" @bind-value="OdabraniRadijus" T="int" Label="Radijus" Placeholder="Odaberite radijus" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
+                <MudSelectItem T="int" Value="0"></MudSelectItem>
+                <MudSelectItem T="int" Value="10">10 km</MudSelectItem>
+                <MudSelectItem T="int" Value="15">15 km</MudSelectItem>
+                <MudSelectItem T="int" Value="20">20 km</MudSelectItem>
+            </MudSelect>
+        }
+        else
+        {
+            <MudSelect Disabled="true" @bind-value="OdabraniRadijus" T="int" Label="Radijus" Placeholder="Odaberite radijus" AnchorOrigin="Origin.BottomCenter" Class="ml-5 mr-5 pt-10">
+                <MudSelectItem T="int" Value="0"></MudSelectItem>
+                <MudSelectItem T="int" Value="5">5 km</MudSelectItem>
+                <MudSelectItem T="int" Value="10">10 km</MudSelectItem>
+                <MudSelectItem T="int" Value="15">15 km</MudSelectItem>
+                <MudSelectItem T="int" Value="20">20 km</MudSelectItem>
+            </MudSelect>
+        }
     </MudNavMenu>
 </MudPaper>
 

@@ -11,6 +11,8 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
     {
         public int DrinksId { get; set; }
         public int UgostiteljskiObjektiId { get; set; }
+        [ForeignKey("UgostiteljskiObjektiId")]
+        public virtual UgostiteljskiObjektiModel UgostiteljskiObjekti { get; set; }
         public string NazivPica { get; set; }
         public string Opis { get; set; }
 

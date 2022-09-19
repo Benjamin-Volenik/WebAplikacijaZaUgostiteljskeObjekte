@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
+using WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Services;
 using WebAplikacijaZaUgostiteljskeObjekte.Shared;
 
@@ -33,6 +35,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
         public void DeleteDish([FromRoute] int id)
         {
             dishService.UkloniJelo(id);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(Jela uredijelo)
+        {
+            _context.Entry(uredijelo).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
     }

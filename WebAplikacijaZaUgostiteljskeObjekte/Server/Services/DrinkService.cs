@@ -16,7 +16,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             _mapper = mapper;
         }
 
-        public void DodajPice(DrinksModel novoPice)
+        public void DodajPice(CreateDrink novoPice)
         {
             _context.Pica.Add(_mapper.Map<Drinks>(novoPice));
             _context.SaveChanges();

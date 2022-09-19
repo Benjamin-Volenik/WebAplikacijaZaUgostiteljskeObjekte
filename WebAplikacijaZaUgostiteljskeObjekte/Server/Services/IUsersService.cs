@@ -7,5 +7,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
     {
         public List<UserModel> Korisnici();
         public void DodajKorisnika(CreateUser noviKorisnik);
+        public void UkloniKorisnika(int id);
     }
 }

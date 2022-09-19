@@ -29,5 +29,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
         {
             usersService.DodajKorisnika(newUser);
         }
+
+        [HttpDelete("{id}")]
+        public void DeleteUser([FromRoute] int id)
+        {
+            usersService.UkloniKorisnika(id);
+        }
     }
 }

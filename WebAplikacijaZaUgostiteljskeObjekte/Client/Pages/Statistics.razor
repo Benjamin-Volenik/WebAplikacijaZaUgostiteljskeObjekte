@@ -39,6 +39,17 @@
                 <MudSelectItem T="string" Value="@("Bistro")"/>
             </MudSelect>
             <MudButton OnClick="TipUgostiteljskogObjekta" Class="d-block ml-auto mr-auto mt-5" Variant="Variant.Filled" Color="Color.Primary">Odaberi</MudButton>
+            @if(UgostiteljskiObjektiTip != null)
+            {
+                if(OdabraniTipUO != "/")
+                {
+                    <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">Broj ugostiteljskih objekata tipa @OdabraniTipUO: @UgostiteljskiObjektiTip.Count()</MudText>
+                }
+                else if(OdabraniTipUO == "/")
+                {
+                    <MudText Class="pa-4 mt-5 d-flex justify-center" Typo="Typo.h6">Ukupan broj ugostiteljskih objekata: @UgostiteljskiObjektiTip.Count()</MudText>
+                }
+            }
         </MudPaper>
         <MudTable Class="pa-10" Items="@UgostiteljskiObjektiTip" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
             <HeaderContent>

@@ -48,7 +48,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.ToTable("Admin", (string)null);
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Comment", b =>
@@ -78,7 +78,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Komentari", (string)null);
+                    b.ToTable("Komentari");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Drinks", b =>
@@ -110,7 +110,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UgostiteljskiObjektiId");
 
-                    b.ToTable("Pica", (string)null);
+                    b.ToTable("Pica");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Jela", b =>
@@ -139,7 +139,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UgostiteljskiObjektiId");
 
-                    b.ToTable("Jela", (string)null);
+                    b.ToTable("Jela");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Ocjene", b =>
@@ -168,7 +168,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Ocjene", (string)null);
+                    b.ToTable("Ocjene");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.PrijavljeniBugovi", b =>
@@ -189,6 +189,9 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                     b.Property<DateTime>("BugVrijeme")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UgostiteljskiObjektiIdBug")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -198,9 +201,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("BugId");
 
+                    b.HasIndex("UgostiteljskiObjektiIdBug");
+
                     b.HasIndex("UserIdBug");
 
-                    b.ToTable("PrijavljeniBugovi", (string)null);
+                    b.ToTable("PrijavljeniBugovi");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", b =>
@@ -226,17 +231,25 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                     b.Property<int>("UgostiteljskiObjektiKucniBroj")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("UgostiteljskiObjektiLatituda")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("UgostiteljskiObjektiLatituda")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("UgostiteljskiObjektiLongituda")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("UgostiteljskiObjektiLongituda")
+                        .HasColumnType("real");
 
                     b.Property<string>("UgostiteljskiObjektiLozinka")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UgostiteljskiObjektiNaziv")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UgostiteljskiObjektiOIB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UgostiteljskiObjektiPdfPutanja")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -275,9 +288,13 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UgostiteljskiObjektiVlasnik")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UgostiteljskiObjektiId");
 
-                    b.ToTable("UgostiteljskiObjekti", (string)null);
+                    b.ToTable("UgostiteljskiObjekti");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", b =>
@@ -306,7 +323,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Korisnici", (string)null);
+                    b.ToTable("Korisnici");
                 });
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.Comment", b =>
@@ -371,11 +388,19 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Migrations
 
             modelBuilder.Entity("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.PrijavljeniBugovi", b =>
                 {
+                    b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.UgostiteljskiObjekti", "UgostiteljskiObjekti")
+                        .WithMany()
+                        .HasForeignKey("UgostiteljskiObjektiIdBug")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserIdBug")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("UgostiteljskiObjekti");
 
                     b.Navigation("User");
                 });

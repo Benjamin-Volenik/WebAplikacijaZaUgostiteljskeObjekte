@@ -28,6 +28,10 @@
 
     public List<UserModel> Korisnici { get; set; } = new();
 
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+
+    public UgostiteljskiObjektiModel ugostiteljskiObjekt { get; set; } = new();
+
     public UserModel Korisnik { get; set; } = new();
 
     void Close() => MudDialog.Close(DialogResult.Ok(true));
@@ -37,7 +41,17 @@
         Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
         Korisnik = Korisnici.FirstOrDefault(u => u.Email == UEmail);
 
-        Bug.UserIdBug = Korisnik.UserId;
+        UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiEmali == UEmail);
+
+        if(Korisnik != null)
+        {
+            Bug.UserIdBug = Korisnik.UserId;     
+        }
+        else if(ugostiteljskiObjekt != null)
+        {
+            Bug.UgostiteljskiObjektiIdBug = ugostiteljskiObjekt.UgostiteljskiObjektiId;
+        }
         Bug.UserEmail = UEmail;
         Bug.BugStaus = 0;
         Bug.BugVrijeme = DateTime.Now;

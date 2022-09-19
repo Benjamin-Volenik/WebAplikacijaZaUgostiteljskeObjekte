@@ -1,21 +1,7 @@
 ﻿@page "/404"
 
-<div class="card customNotFound">
-    <div class="card-body">
-        <div class="row">
-            <div class="col">
-                We are sorry, but we couldn't find the page you are looking for!!!
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col text-md-center m-5 text-primary">
-        <button type="button" class="btn btn-primary" @onclick="NavigateToHome">Navigate to the Home Page</button>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        If you want, you can report this error by clicking the following link: <a href="/reportError/404/The page is missing">Report an error</a>
-    </div>
+
+<div class="text-md-center m-5">
+    <MudText Typo="Typo.h3"><b>Ups! Nešto je pošlo po krivu,ne možemo pronaći stranicu koju tražite!</b></MudText>
+    <MudButton Class="mt-5" Variant="Variant.Filled" Color="Color.Primary" @onclick="NavigateToHome">Vratite se na početnu stranicu</MudButton>
 </div>

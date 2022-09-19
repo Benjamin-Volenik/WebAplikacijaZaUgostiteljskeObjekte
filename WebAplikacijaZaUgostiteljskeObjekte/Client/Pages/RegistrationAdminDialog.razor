@@ -1,0 +1,38 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject IJSRuntime JsRuntime
+@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField Label="Unesite razlog poništavanja registracije:" @bind-Value="Message"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Odustani</MudButton>
+        <MudButton Color="Color.Primary" OnClick="SendLocalEmail" Variant="Variant.Filled" Class="ml-auto">Pošalji</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public UgostiteljskiObjektiModel UgostiteljskiObjektMail { get; set; } = new();
+
+    public string Message;
+
+    protected void SendLocalEmail()
+    {
+        string toEmailAddress = UgostiteljskiObjektMail.UgostiteljskiObjektiEmali;
+        string subject = "Registracija WAZPUO";
+        string body = Message;
+
+        JsRuntime.InvokeAsync<object>("blazorExtensions.SendLocalEmail",
+        new object[] { toEmailAddress, subject, body });
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+
+}

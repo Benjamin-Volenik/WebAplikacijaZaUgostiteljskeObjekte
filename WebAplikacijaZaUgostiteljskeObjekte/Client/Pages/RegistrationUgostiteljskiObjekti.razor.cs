@@ -16,9 +16,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
         public CreateUO NoviUO { get; set; } = new();
 
+        // slike ugostiteljskog objekta
         public IList<IBrowserFile> files = new List<IBrowserFile>();
 
+        public IList<IBrowserFile> filesPDF = new List<IBrowserFile>();
+
         public IFormFile coverphoto { get; set; }
+
+        public int provjera = 0;
 
         protected override async Task OnInitializedAsync()
         {
@@ -28,18 +33,34 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         public void PokaziAlert()
         {
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-            Snackbar.Add("Uspješno ste registrirali ugostiteljski objekt!");
+            Snackbar.Add("Vaša registracija je zaprimljena!");
         }
 
         public async Task DodajNoviUO()
         {
+            provjera = 0;
             NoviUO.UgostiteljskiObjektiProsjecnaOcjena = 0;
-            NoviUO.UgostiteljskiObjektiSlika = "https://via.placeholder.com/350x300";
             NoviUO.UgostiteljskiObjektiStanje = "Neodobreno";
-            NoviUO.UgostiteljskiObjektiSlika = files.FirstOrDefault().Name;
-            await Http.PostAsJsonAsync<CreateUO>("api/UgostiteljskiObjekti", NoviUO);
-            PokaziAlert();
-            NavigationManager.NavigateTo("/");
+            NoviUO.UgostiteljskiObjektiSlika = "slike/" + files.FirstOrDefault().Name;
+            NoviUO.UgostiteljskiObjektiPdfPutanja = "pdf/" + filesPDF.FirstOrDefault().Name;
+            foreach(var ugostiteljskiobjekti in ugostiteljskiObjekti)
+            {
+                if(NoviUO.UgostiteljskiObjektiOIB == ugostiteljskiobjekti.UgostiteljskiObjektiOIB)
+                {
+                    provjera = 1;
+                }
+            }
+            if(provjera == 0)
+            {
+                await Http.PostAsJsonAsync<CreateUO>("api/UgostiteljskiObjekti", NoviUO);
+                PokaziAlert();
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+                Snackbar.Add("Već postoji ugostiteljski objekt s tim OIB-om!");
+            }
 
 
         }
@@ -49,6 +70,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             foreach (var file in e.GetMultipleFiles())
             {
                 files.Add(file);
+            }
+            //TODO upload the files to the server
+        }
+        private void UploadFilesPDF(InputFileChangeEventArgs e)
+        {
+            foreach (var file in e.GetMultipleFiles())
+            {
+                filesPDF.Add(file);
             }
             //TODO upload the files to the server
         }

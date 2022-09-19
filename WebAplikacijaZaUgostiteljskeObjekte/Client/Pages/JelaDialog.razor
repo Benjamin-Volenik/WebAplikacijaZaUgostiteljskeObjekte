@@ -1,0 +1,54 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject ISnackbar snackbar
+
+<EditForm Model="uredjenoJelo" OnValidSubmit="UrediJelo">
+    <MudDialog>
+        <DialogContent>
+            <div class="d-flex flex-column py-1">
+                <MudText Class="mt-5">Unesite naziv jela</MudText>
+                <MudTextField @bind-Value="uredjenoJelo.NazivJela" For="@(() => uredjenoJelo.NazivJela)"/>
+                <MudText Class="mt-5">Unesite opis jela</MudText>
+                <MudTextField @bind-Value="uredjenoJelo.Opis" For="@(() => uredjenoJelo.Opis)"/>
+                <MudText Class="mt-5">Unesite cijenu jela</MudText>
+                <MudNumericField @bind-Value="uredjenoJelo.Cjena" For="@(() => uredjenoJelo.Cjena)"/>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Close">Odustani</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Uredi jelo</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public int JeloId { get; set; }
+
+    public List<DishModel> urediJelo { get; set; } = new();
+
+    public DishModel uredjenoJelo { get; set; } = new();
+
+    public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+    protected async override Task OnParametersSetAsync()
+    {
+        urediJelo = await Http.GetFromJsonAsync<List<DishModel>>("api/Jela");
+        uredjenoJelo = urediJelo.FirstOrDefault(x => x.JelaId == JeloId);
+        ugostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+    }
+
+    async Task UrediJelo()
+    {
+        uredjenoJelo.UgostiteljskiObjekti = ugostiteljskiObjekti.FirstOrDefault(x => x.UgostiteljskiObjektiId == uredjenoJelo.UgostiteljskiObjektiId);
+        await Http.PutAsJsonAsync("api/Jela", uredjenoJelo);
+        navigationManager.NavigateTo("/ugostiteljskiobjekti/" + uredjenoJelo.UgostiteljskiObjektiId, true);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Uspješno ste uredili jelo!");
+    }
+}

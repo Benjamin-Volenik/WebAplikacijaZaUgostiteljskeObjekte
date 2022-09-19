@@ -10,6 +10,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
     {
         public int BugId { get; set; }
         public int UserIdBug { get; set; }
+        public int UgostiteljskiObjektiIdBug { get; set; }
         public string UserEmail { get; set; }
         public string BugText { get; set; }
         public int BugStaus { get; set; }

@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Darnton.Blazor.DeviceInterop.Geolocation;
 using GoogleMaps.LocationServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddOptions();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddScoped<IGeolocationService, GeolocationService>();
 
 
 

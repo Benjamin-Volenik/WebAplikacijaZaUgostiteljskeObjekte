@@ -13,6 +13,10 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         public string UgostiteljskiObjektiNaziv { get; set; }
         [Required(ErrorMessage = "Ovo polje ne smije biti prazno.")]
         public string UgostiteljskiObjektiKontakt { get; set; }
+        [Required(ErrorMessage = "Ovo polje ne smije biti prazno.")]
+        public string UgostiteljskiObjektiOIB { get; set; }
+        [Required(ErrorMessage = "Ovo polje ne smije biti prazno.")]
+        public string UgostiteljskiObjektiVlasnik { get; set; }
         [Required(ErrorMessage = "Niste unesli Email.")]
         public string UgostiteljskiObjektiEmali { get; set; }
         [Required(ErrorMessage = "Niste unesli lozniku.")]
@@ -31,9 +35,9 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         [Required(ErrorMessage = "Niste unesti kućni broj.")]
         public int UgostiteljskiObjektiKucniBroj { get; set; }
         [Required(ErrorMessage = "Morate unesti latitudu.")]
-        public decimal UgostiteljskiObjektiLatituda { get; set; }
+        public float UgostiteljskiObjektiLatituda { get; set; }
         [Required(ErrorMessage = "Morate unesti longitutdu.")]
-        public decimal UgostiteljskiObjektiLongituda { get; set; }
+        public float UgostiteljskiObjektiLongituda { get; set; }
         [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
         public string UgostiteljskiObjektiRadnoVrijeme { get; set; }
         [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
@@ -42,5 +46,6 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         public string UgostiteljskiObjektiRadnoVrijemeSub { get; set; }
         [Required(ErrorMessage = "Morate unesti radno vrijeme.")]
         public string UgostiteljskiObjektiRadnoVrijemeNed { get; set; }
+        public string UgostiteljskiObjektiPdfPutanja { get; set; }
     }
 }

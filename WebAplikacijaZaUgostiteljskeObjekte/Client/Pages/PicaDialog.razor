@@ -1,0 +1,56 @@
+﻿@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@inject ISnackbar snackbar
+@inject NavigationManager navigationManager
+
+
+<EditForm Model="uredjenoPice" OnValidSubmit="UrediPice">
+    <MudDialog>
+        <DialogContent>
+                <MudText Class="mt-5">Unesite naziv pića</MudText>
+                <MudTextField @bind-Value="uredjenoPice.NazivPica" For="@(() => uredjenoPice.NazivPica)"/>
+                <MudText Class="mt-5">Unesite opis pića</MudText>
+                <MudTextField @bind-Value="uredjenoPice.Opis" For="@(() => uredjenoPice.Opis)"/>
+                <MudText Class="mt-5">Unesite normativ pića</MudText>
+                <MudNumericField @bind-Value="uredjenoPice.PiceNormativ" For="@(() => uredjenoPice.PiceNormativ)"/>
+                <MudText Class="mt-5">Unesite cijenu pića</MudText>
+                <MudNumericField @bind-Value="uredjenoPice.Cjena" For="@(() => uredjenoPice.Cjena)"/>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Close">Odustani</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">uredi piće</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public int PiceId { get; set; }
+
+    public List<DrinksModel> urediPice { get; set; } = new();
+
+    public DrinksModel uredjenoPice { get; set; } = new();
+
+    public List<UgostiteljskiObjektiModel> ugostiteljskiObjekti { get; set; } = new();
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+    protected async override Task OnParametersSetAsync()
+    {
+        urediPice = await Http.GetFromJsonAsync<List<DrinksModel>>("api/Drinks");
+        uredjenoPice = urediPice.FirstOrDefault(x => x.DrinksId == PiceId);
+        ugostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+    }
+
+    async Task UrediPice()
+    {
+        uredjenoPice.UgostiteljskiObjekti = ugostiteljskiObjekti.FirstOrDefault(x => x.UgostiteljskiObjektiId == uredjenoPice.UgostiteljskiObjektiId);
+        await Http.PutAsJsonAsync("api/Drinks", uredjenoPice);
+        navigationManager.NavigateTo("/ugostiteljskiobjekti/" + uredjenoPice.UgostiteljskiObjektiId, true);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Uspješno ste uredili jelo!");
+    }
+
+}

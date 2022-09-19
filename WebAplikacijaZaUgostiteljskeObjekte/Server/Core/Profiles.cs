@@ -21,6 +21,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Core
             CreateMap<Admin, AdminModel>().ReverseMap();
             CreateMap<PrijavljeniBugovi, BugModel>().ReverseMap();
             CreateMap<Drinks, DrinksModel>().ReverseMap();
+            CreateMap<Drinks, CreateDrink>().ReverseMap();
         }
     }
 }

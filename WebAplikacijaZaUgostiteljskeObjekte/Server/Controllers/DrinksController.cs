@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Core;
+using WebAplikacijaZaUgostiteljskeObjekte.Server.Core.Entities;
 using WebAplikacijaZaUgostiteljskeObjekte.Server.Services;
 using WebAplikacijaZaUgostiteljskeObjekte.Shared;
 
@@ -24,7 +26,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
         }
 
         [HttpPost]
-        public void AddDrink([FromBody] DrinksModel newDrink)
+        public void AddDrink([FromBody] CreateDrink newDrink)
         {
             drinkService.DodajPice(newDrink);
         }
@@ -33,6 +35,14 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Controllers
         public void DeleteDrink([FromRoute] int id)
         {
             drinkService.UkloniPice(id);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(Drinks uredipice)
+        {
+            _context.Entry(uredipice).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

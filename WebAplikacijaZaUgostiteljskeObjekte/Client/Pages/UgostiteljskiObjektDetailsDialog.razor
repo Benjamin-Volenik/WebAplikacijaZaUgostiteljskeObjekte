@@ -9,14 +9,16 @@
         <DialogContent>
             <div class="d-flex flex-column py-1">
                 <MudText>Unesite broj telefona</MudText>
-                <MudTextField Label="Novi broj:" 
+                <MudTextField Label="Broj telefona:" 
                              Mask="@(new PatternMask("000 000 000"))" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiKontakt" For="@(() => UOBrojtelefona.UgostiteljskiObjektiKontakt)"/>
-                <MudText>Unesite radno vrijeme (pon-pet)</MudText>
-                <MudTextField Placeholder="Unesite radno vrijem primjer: 07-23" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijeme" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijeme)"></MudTextField>
-                <MudText>Unesite radno vrijeme (sub)</MudText>
-                <MudTextField Placeholder="Unesite radno vrijem primjer: 07-23" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeSub" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeSub)"></MudTextField>
-                <MudText>Unesite radno vrijeme (ned)</MudText>
-                <MudTextField Placeholder="Unesite radno vrijem primjer: 07-23" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeNed" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeNed)"></MudTextField>
+                <MudText Class="mt-2">Unesite radno vrijeme (pon-pet)</MudText>
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Placeholder="Unesite radno vrijeme primjer: 07:00 - 23:00" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijeme" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijeme)"></MudTextField>
+                <MudText Class="mt-2">Unesite radno vrijeme (sub)</MudText>
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Placeholder="Unesite radno vrijeme primjer: 07:00 - 23:00" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeSub" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeSub)"></MudTextField>
+                <MudText Class="mt-2">Unesite radno vrijeme (ned)</MudText>
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Placeholder="Unesite radno vrijeme primjer: 07:00 - 23:00" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeNed" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemeNed)"></MudTextField>
+                <MudText Class="mt-2">Unesite radno vrijeme (praznici)</MudText>
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Placeholder="Unesite radno vrijeme primjer: 07:00 - 23:00" @bind-Value="UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemePraznici" For="@(() => UOBrojtelefona.UgostiteljskiObjektiRadnoVrijemePraznici)"></MudTextField>
             </div>
         </DialogContent>
         <DialogActions>

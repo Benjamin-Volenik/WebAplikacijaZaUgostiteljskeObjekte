@@ -66,6 +66,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
             ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
 
+            if(ugostiteljskiObjekt == null)
+            {
+                navigationManager.NavigateTo("/404");
+            }
+
             Dishes = await Http.GetFromJsonAsync<List<DishModel>>("api/Jela");
 
             Drinks = await Http.GetFromJsonAsync<List<DrinksModel>>("api/Drinks");
@@ -109,21 +114,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
             sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
 
-            foreach (var ocjene in sveOcjene)
-            {
-                fSOcjene = fSOcjene + ocjene.Ocjena;
-            }
-
-            if (fSOcjene == 0)
-            {
-                ProsjecnaOcjena = 0;
-            }
-            else
-            {
-                ProsjecnaOcjena = fSOcjene / sveOcjene.Count();
-            }
-
-            ugostiteljskiObjekt.UgostiteljskiObjektiProsjecnaOcjena = Convert.ToSingle(ProsjecnaOcjena);
+             //ugostiteljskiObjekt.UgostiteljskiObjektiProsjecnaOcjena = Convert.ToSingle(ProsjecnaOcjena);
 
             await Http.PutAsJsonAsync("api/UgostiteljskiObjekti", ugostiteljskiObjekt);
 
@@ -131,7 +122,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public void OpenDialog()
         {
-            DialogService.Show<UgostiteljskiObjektDetailsDialog>("Uredi broj telefona", new DialogParameters
+            DialogService.Show<UgostiteljskiObjektDetailsDialog>("Uredi informacije", new DialogParameters
             {
                 ["Brojtelefona"] = ugostiteljskiObjekt.UgostiteljskiObjektiKontakt,
                 ["UOId"] = Id
@@ -160,6 +151,7 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             {
                 Comment.UgostiteljskiObjektId = ugostiteljskiObjekt.UgostiteljskiObjektiId;
                 Comment.UserId = Korisnik.UserId;
+                Comment.CommentTime = DateTime.Now; 
                 await Http.PostAsJsonAsync<AddComment>("api/Comment", Comment);
                 Komentari = await Http.GetFromJsonAsync<List<CommentModel>>("api/Comment");
                 Comment.CommentText = null;
@@ -176,15 +168,33 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public async Task DodajOcjenu()
         {
+            fSOcjene = 0;
             Grade.UgostiteljskiObjektiId = ugostiteljskiObjekt.UgostiteljskiObjektiId;
             Grade.UserId = Korisnik.UserId;
             Grade.Ocjena = Int32.Parse(SelectedOption);
+            Grade.OcjenaVrijeme = DateTime.Now;
             await Http.PostAsJsonAsync<AddGrade>("api/Ocjene", Grade);
             Ocjene = await Http.GetFromJsonAsync<List<OcjeneModel>>("api/Ocjene");
             sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
             OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
             UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
             ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
+            foreach (var ocjene in sveOcjene)
+            {
+                fSOcjene = fSOcjene + ocjene.Ocjena;
+            }
+
+            if (fSOcjene == 0)
+            {
+                ProsjecnaOcjena = 0;
+            }
+            else
+            {
+                ProsjecnaOcjena = fSOcjene / sveOcjene.Count();
+            }
+            ugostiteljskiObjekt.UgostiteljskiObjektiProsjecnaOcjena = Convert.ToSingle(ProsjecnaOcjena);
+
+            await Http.PutAsJsonAsync("api/UgostiteljskiObjekti", ugostiteljskiObjekt);
             snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
             snackbar.Add("Vaša ocjena je zabilježena");
         }
@@ -206,12 +216,30 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public async Task ObrisiOcjenu(OcjeneModel ocjena)
         {
+            fSOcjene = 0;
             await Http.DeleteAsync($"api/Ocjene/{ocjena.OcjeneId}");
-            Ocjene = await Http.GetFromJsonAsync<List<OcjeneModel>>("api/Ocjene");
+            Ocjene.Remove(ocjena);
             sveOcjene = Ocjene.FindAll(o => o.UgostiteljskiObjektiId == ugostiteljskiObjekt?.UgostiteljskiObjektiId);
+            OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
             UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
             ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
-            OcjenaKorisnika = Ocjene.FirstOrDefault(o => o.UserId == Korisnik.UserId && o.UgostiteljskiObjektiId == ugostiteljskiObjekt.UgostiteljskiObjektiId);
+            foreach (var ocjene in sveOcjene)
+            {
+                fSOcjene = fSOcjene + ocjene.Ocjena;
+            }
+
+            if (fSOcjene == 0)
+            {
+                ProsjecnaOcjena = 0;
+            }
+            else
+            {
+                ProsjecnaOcjena = fSOcjene / sveOcjene.Count();
+            }
+            ugostiteljskiObjekt.UgostiteljskiObjektiProsjecnaOcjena = Convert.ToSingle(ProsjecnaOcjena);
+
+            await Http.PutAsJsonAsync("api/UgostiteljskiObjekti", ugostiteljskiObjekt);
+            snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
 
         }
 
@@ -222,6 +250,29 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
             drinksValues = Drinks.FindAll(d => d.UgostiteljskiObjektiId == Int32.Parse(Id));
         }
 
+        public void UrediJelo(DishModel uredijelo)
+        {
+            DialogService.Show<JelaDialog>("Uredi jelo", new DialogParameters
+            {
+                ["JeloId"] = uredijelo.JelaId
+            });
+        }
+        public void UrediPice(DrinksModel uredipice)
+        {
+            DialogService.Show<PicaDialog>("Uredi piće", new DialogParameters
+            {
+                ["PiceId"] = uredipice.DrinksId
+            });
+        }
+        protected override void OnParametersSet()
+        {
+            if (ugostiteljskiObjekt.UgostiteljskiObjektiId != Int32.Parse(Id))
+            {
+                ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
+                values = Dishes.FindAll(u => u.UgostiteljskiObjektiId == Int32.Parse(Id));
+                drinksValues = Drinks.FindAll(d => d.UgostiteljskiObjektiId == Int32.Parse(Id));
+            }
+        }
 
     }
 }

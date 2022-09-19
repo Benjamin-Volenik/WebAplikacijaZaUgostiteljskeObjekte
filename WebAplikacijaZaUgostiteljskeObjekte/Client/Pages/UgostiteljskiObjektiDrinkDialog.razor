@@ -31,7 +31,7 @@
 
     public List<DrinksModel> UONovoPice { get; set; } = new();
 
-    public DrinksModel NovoPice { get; set; } = new();
+    public CreateDrink NovoPice { get; set; } = new();
 
     public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
 
@@ -49,7 +49,7 @@
 
     async Task DodajNovoPice()
     {
-        await Http.PostAsJsonAsync<DrinksModel>("api/Drinks", NovoPice);
+        await Http.PostAsJsonAsync<CreateDrink>("api/Drinks", NovoPice);
         snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         snackbar.Add("Uspješno ste dodali piće.");
         navigationManager.NavigateTo("/ugostiteljskiobjekti/" + UOId, true);

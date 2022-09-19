@@ -11,6 +11,10 @@
     <MudItem xs="15" sm="12" Class="pa-4 d-flex justify-content-center">
         <MudCard Class="w-50">
             <MudCardContent>
+                <MudTextField Label="Vlasnik:" 
+                              Placeholder="Primjer: Benjamin Volenik" @bind-Value="NoviUO.UgostiteljskiObjektiVlasnik" For="@(() => NoviUO.UgostiteljskiObjektiVlasnik)"/>
+                <MudTextField Label="OIB ugostiteljskog objekta:" 
+                              @bind-Value="NoviUO.UgostiteljskiObjektiOIB" For="@(() => NoviUO.UgostiteljskiObjektiOIB)" Mask="@(new PatternMask("00000000000"))" />
                 <MudTextField Label="Naziv:" 
                               @bind-Value="NoviUO.UgostiteljskiObjektiNaziv" For="@(() => NoviUO.UgostiteljskiObjektiNaziv)"/>
                 <MudTextField Label="Broj telefona:" Class="mt-3"
@@ -25,25 +29,26 @@
                     <MudSelectItem T="string" Value="@("Kavana")"/>
                     <MudSelectItem T="string" Value="@("Pivnica")"/>
                     <MudSelectItem T="string" Value="@("Caffe bar")"/>
+                    <MudSelectItem T="string" Value="@("Caffe & Night Bar")"/>
                     <MudSelectItem T="string" Value="@("Bistro")"/>
                 </MudSelect>
                 <MudTextField Label="Grad:" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiGrad" For="@(() => NoviUO.UgostiteljskiObjektiGrad)" />
                 <MudTextField Label="Ulica:" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiUlica" For="@(() => NoviUO.UgostiteljskiObjektiUlica)" />
-                <MudTextField Label="Kućni broj:" Class="mt-3"
+                <MudNumericField Label="Kućni broj:" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiKucniBroj" For="@(() => NoviUO.UgostiteljskiObjektiKucniBroj)" />
-                <MudTextField Label="Latituda:" Class="mt-3"
+                <MudNumericField Label="Latituda:" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiLatituda" For="@(() => NoviUO.UgostiteljskiObjektiLatituda)" />
-                <MudTextField Label="Longituda:" Class="mt-3"
+                <MudNumericField Label="Longituda:" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiLongituda" For="@(() => NoviUO.UgostiteljskiObjektiLongituda)" />
-                <MudTextField Label="Radno vrijeme (pon-pet):" Placeholder="Primjer: 08:00 - 22:00" Class="mt-3"
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Label="Radno vrijeme (pon-pet):" Placeholder="Primjer: 08:00 - 22:00" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiRadnoVrijeme" For="@(() => NoviUO.UgostiteljskiObjektiRadnoVrijeme)" />
-                <MudTextField Label="Radno vrijeme (subota):" Placeholder="Primjer: 08:00 - 22:00 (ukoliko ne radite subotom upišite 0)" Class="mt-3"
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Label="Radno vrijeme (subota):" Placeholder="Primjer: 08:00 - 22:00 (ukoliko ne radite subotom upišite 0)" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiRadnoVrijemeSub" For="@(() => NoviUO.UgostiteljskiObjektiRadnoVrijemeSub)" />
-                <MudTextField Label="Radno vrijeme (nedjelja):" Placeholder="Primjer: 08:00 - 22:00 (ukoliko ne radite nedjeljom upišite 0)" Class="mt-3"
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Label="Radno vrijeme (nedjelja):" Placeholder="Primjer: 08:00 - 22:00 (ukoliko ne radite nedjeljom upišite 0)" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiRadnoVrijemeNed" For="@(() => NoviUO.UgostiteljskiObjektiRadnoVrijemeNed)" />
-                <MudTextField Label="Radno vrijeme (praznici):" Placeholder="Primjer: 08:00 - 22:00 (ukoliko ne radite praznicima upišite 0)" Class="mt-3"
+                <MudTextField Mask="@(new PatternMask("00:00 - 00:00"))" Label="Radno vrijeme (praznici):" Placeholder="Primjer: 08:00 - 22:00 (ukoliko ne radite praznicima upišite 0)" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiRadnoVrijemePraznici" For="@(() => NoviUO.UgostiteljskiObjektiRadnoVrijemePraznici)" />
                 <MudTextField Label="Lozinka:" Class="mt-3"
                               @bind-Value="NoviUO.UgostiteljskiObjektiLozinka" For="@(() => NoviUO.UgostiteljskiObjektiLozinka)" InputType="InputType.Password"/>
@@ -56,7 +61,15 @@
                     for="fileInput">
                     Prenesite sliku ugostiteljskog objekta
                 </MudButton>
+                <MudButton Class="mt-3 d-flex align-items-center" HtmlTag="label"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    StartIcon="@Icons.Filled.CloudUpload"
+                    for="fileInputPDF">
+                    Prenesite izvadak iz obrtnog registra za ugostiteljski objekt (PDF)
+                </MudButton>
                 <InputFile id="fileInput" hidden OnChange="UploadFiles"></InputFile>
+                <InputFile id="fileInputPDF" hidden OnChange="UploadFilesPDF"></InputFile>
             </MudCardContent>
             <MudCardActions>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Registriraj se</MudButton>

@@ -32,5 +32,11 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Server.Services
             }
             return list;
         }
+
+        public void UkloniKorisnika(int id)
+        {
+            _context.Korisnici.Remove(_context.Korisnici.Find(id));
+            _context.SaveChanges();
+        }
     }
 }

@@ -1,0 +1,89 @@
+﻿@page "/korisnici"
+@using WebAplikacijaZaUgostiteljskeObjekte.Shared
+@inject HttpClient Http
+@inject ISnackbar snackbar
+
+
+<MudText Class="d-flex justify-content-center align-items-center pa-4" Typo="Typo.h3">Lista registriranih korisnika</MudText>
+
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="Registrirani korisnici">
+        <div class="pa-4 mt-5">
+            <MudTable Items="@Korisnici" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Ime</MudTh>
+                    <MudTh>Prezime</MudTh>
+                    <MudTh>Email</MudTh>
+                    <MudTh>Lozinka</MudTh>
+                    <MudTh>Obriši korisnika</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Ime">@context.Name</MudTd>
+                    <MudTd DataLabel="Prezime">@context.LastName</MudTd>
+                    <MudTd DataLabel="Email">@context.Email</MudTd>            
+                    <MudTd DataLabel="Lozinka">@context.Password</MudTd>
+                    <MudTd DataLabel="Obriši korisika"><MudButton @onclick="() => ObrisiKorisnika(context.UserId)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="@Icons.Filled.Delete" /></MudButton></MudTd>
+                </RowTemplate>
+            </MudTable>
+        </div>
+    </MudTabPanel>
+    <MudTabPanel Text="Registrirani ugostiteljski objekti">
+        <div class="pa-4 mt-5">
+            <MudTable Items="@UgostiteljskiObjekti" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Naziv</MudTh>
+                    <MudTh>Vlasnik</MudTh>
+                    <MudTh>Email</MudTh>
+                    <MudTh>Lozinka</MudTh>
+                    <MudTh>Obriši ugostiteljski objekt</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Naziv">@context.UgostiteljskiObjektiNaziv</MudTd>
+                    <MudTd DataLabel="Vlasnik">@context.UgostiteljskiObjektiVlasnik</MudTd>
+                    <MudTd DataLabel="Email">@context.UgostiteljskiObjektiEmali</MudTd>            
+                    <MudTd DataLabel="Lozinka">@context.UgostiteljskiObjektiLozinka</MudTd>
+                    <MudTd DataLabel="Obriši korisika"><MudButton @onclick="() => ObrisiUO(context.UgostiteljskiObjektiId)" Variant="Variant.Filled" Color="Color.Error"><MudIcon Icon="@Icons.Filled.Delete" /></MudButton></MudTd>
+                </RowTemplate>
+            </MudTable>
+        </div>
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+
+    public List<UserModel> Korisnici { get; set; } = new();
+
+    public UserModel Korisnik { get; set; } = new();
+
+    public List<UgostiteljskiObjektiModel> UgostiteljskiObjekti { get; set; } = new();
+
+    public UgostiteljskiObjektiModel ugostiteljskiObjekt { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Korisnici = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
+        UgostiteljskiObjekti = await Http.GetFromJsonAsync<List<UgostiteljskiObjektiModel>>("api/UgostiteljskiObjekti");
+        UgostiteljskiObjekti = UgostiteljskiObjekti.FindAll(u => u.UgostiteljskiObjektiStanje == "Odobreno");
+
+    }
+
+    public async Task ObrisiKorisnika(int id)
+    {
+        Korisnik = Korisnici.FirstOrDefault(k => k.UserId == id);
+        await Http.DeleteAsync($"api/User/{id}");
+        Korisnici.Remove(Korisnik);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Obrisali ste korisnički račun: " + Korisnik.Email);
+    }
+
+    public async Task ObrisiUO(int id)
+    {
+        ugostiteljskiObjekt = UgostiteljskiObjekti.FirstOrDefault(uo => uo.UgostiteljskiObjektiId == id);
+        await Http.DeleteAsync($"api/UgostiteljskiObjekti/{id}");
+        UgostiteljskiObjekti.Remove(ugostiteljskiObjekt);
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        snackbar.Add("Obrisali ste korisnički račun:" + ugostiteljskiObjekt.UgostiteljskiObjektiEmali);
+    }
+
+}

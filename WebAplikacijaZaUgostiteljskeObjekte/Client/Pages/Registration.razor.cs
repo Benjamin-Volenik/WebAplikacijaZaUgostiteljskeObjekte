@@ -18,6 +18,8 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
         public List<UserModel> Users { get; set; } = new();
         public CreateUser NoviKorisnik { get; set; } = new();
 
+        public int provjera = 0;
+
         protected override async Task OnInitializedAsync()
         {
             Users = await Http.GetFromJsonAsync<List<UserModel>>("api/User");
@@ -31,9 +33,28 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Client.Pages
 
         public async Task DodajNovogKorisnika()
         {
-            await Http.PostAsJsonAsync<CreateUser>("api/User", NoviKorisnik);
-            PokaziAlert();
-            NavigationManager.NavigateTo("/");
+            provjera = 0;
+
+            foreach(var user in Users)
+            {
+                if(NoviKorisnik.Email == user.Email)
+                {
+                    provjera = 1;
+                }
+            }
+
+            if(provjera == 0)
+            {
+                await Http.PostAsJsonAsync<CreateUser>("api/User", NoviKorisnik);
+                PokaziAlert();
+                NavigationManager.NavigateTo("/");
+
+            }
+            else
+            {
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+                Snackbar.Add("Već postoji korisnik sa tom Email adresom!");
+            }
 
 
         }

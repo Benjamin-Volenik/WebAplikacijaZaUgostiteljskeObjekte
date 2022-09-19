@@ -14,6 +14,9 @@ namespace WebAplikacijaZaUgostiteljskeObjekte.Shared
         public string NazivJela { get; set; }
         public string Opis { get; set; }
 
+        [ForeignKey("UgostiteljskiObjektiId")]
+        public virtual UgostiteljskiObjektiModel UgostiteljskiObjekti { get; set; }
+
         [Column(TypeName = "money")]
         public decimal Cjena { get; set; }
 
